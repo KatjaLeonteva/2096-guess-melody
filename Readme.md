@@ -1,7 +1,7 @@
 # Личный проект «Угадай мелодию» [![Build status][travis-image]][travis-url]
 
 * Студент: [Екатерина Леонтьева](https://up.htmlacademy.ru/ecmascript/5/user/2096).
-* Наставник: `Неизвестно`.
+* Наставник: [Даниил Оношко](https://htmlacademy.ru/profile/id154426).
 
 ---
 

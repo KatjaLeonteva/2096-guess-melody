@@ -1,7 +1,9 @@
 'use strict';
 
-const RIGHT_ARROW = 39;
-const LEFT_ARROW = 37;
+const KeyCodes = {
+  RIGHT_ARROW: 39,
+  LEFT_ARROW: 37
+};
 
 const BUTTONS_MARKUP = `
 <div class="arrows__wrap">
@@ -58,10 +60,10 @@ const selectNextScreen = () => {
 // Переключение экранов по нажатию на стрелки на клавиатуре
 document.addEventListener(`keydown`, (evt) => {
   switch (evt.keyCode) {
-    case RIGHT_ARROW:
+    case KeyCodes.RIGHT_ARROW:
       selectNextScreen();
       break;
-    case LEFT_ARROW:
+    case KeyCodes.LEFT_ARROW:
       selectPrevScreen();
       break;
   }

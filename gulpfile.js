@@ -11,6 +11,9 @@ const mqpacker = require(`css-mqpacker`);
 const minify = require(`gulp-csso`);
 const rename = require(`gulp-rename`);
 const imagemin = require(`gulp-imagemin`);
+const rollup = require(`gulp-better-rollup`);
+const sourcemaps = require(`gulp-sourcemaps`);
+
 
 gulp.task(`style`, () => {
   return gulp.src(`sass/style.scss`).
@@ -38,6 +41,9 @@ gulp.task(`style`, () => {
 gulp.task(`scripts`, () => {
   return gulp.src(`js/**/*.js`).
     pipe(plumber()).
+    pipe(sourcemaps.init()).
+    pipe(rollup({}, `iife`)).
+    pipe(sourcemaps.write(``)).
     pipe(gulp.dest(`build/js/`));
 });
 

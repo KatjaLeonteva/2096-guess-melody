@@ -1,3 +1,5 @@
+/** @module Приветствие */
+
 import {render} from './util.js';
 
 const template = `

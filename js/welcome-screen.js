@@ -1,6 +1,7 @@
 /** @module Приветствие */
 
-import {render} from './util.js';
+import {render, changeScreen} from "./util";
+import gameScreenArtist from "./game-screen-artist";
 
 const template = `
 <section class="main main--welcome">
@@ -16,5 +17,8 @@ const template = `
 `;
 
 const welcomeScreen = render(template);
+const playButton = welcomeScreen.querySelector(`.main-play`);
+
+playButton.addEventListener(`click`, () => changeScreen(gameScreenArtist));
 
 export default welcomeScreen;

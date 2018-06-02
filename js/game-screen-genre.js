@@ -1,6 +1,11 @@
 /** @module Игра на выбор жанра */
 
-import {render} from './util.js';
+import {changeScreen, render} from './util';
+import welcomeScreen from "./welcome-screen";
+
+import resultScreenWin from "./result-screen-win";
+import resultScreenTimeup from "./result-screen-timeup";
+import resultScreenLose from "./result-screen-lose";
 
 const template = `
 <section class="main main--level main--level-genre">
@@ -91,5 +96,45 @@ const template = `
 `;
 
 const gameScreenGenre = render(template);
+const playAgainButton = gameScreenGenre.querySelector(`.play-again`);
+const form = gameScreenGenre.querySelector(`form.genre`);
+const answers = Array.from(form.querySelectorAll(`input[name="answer"]`));
+const sendAnswerButton = form.querySelector(`.genre-answer-send`);
+
+const onPlayAgainClick = () => {
+  resetScreen();
+  changeScreen(welcomeScreen);
+};
+
+const onAnswerChange = () => {
+  const someAnswersChecked = answers.some((el) => el.checked === true);
+  sendAnswerButton.disabled = !someAnswersChecked;
+};
+
+const onAnswerSend = () => {
+  const resultScreens = [resultScreenWin, resultScreenTimeup, resultScreenLose];
+  const randomScreen = resultScreens[Math.floor(Math.random() * resultScreens.length)];
+  resetScreen();
+  changeScreen(randomScreen);
+};
+
+const resetScreen = () => {
+  answers.forEach((answer) => {
+    answer.checked = false;
+  });
+
+  sendAnswerButton.disabled = true;
+};
+
+playAgainButton.addEventListener(`click`, onPlayAgainClick);
+
+// Кнопка «Ответить» отключена, пока не выбран ни один из вариантов ответа.
+sendAnswerButton.disabled = true;
+
+answers.forEach((answer) => {
+  answer.addEventListener(`change`, onAnswerChange);
+});
+
+sendAnswerButton.addEventListener(`click`, onAnswerSend);
 
 export default gameScreenGenre;

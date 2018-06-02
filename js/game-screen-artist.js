@@ -1,6 +1,8 @@
 /** @module Игра на выбор исполнителя */
 
-import {render} from './util.js';
+import {render, changeScreen} from "./util";
+import welcomeScreen from "./welcome-screen";
+import gameScreenGenre from "./game-screen-genre";
 
 const template = `
 <section class="main main--level main--level-artist">
@@ -68,5 +70,13 @@ const template = `
 `;
 
 const gameScreenArtist = render(template);
+const playAgainButton = gameScreenArtist.querySelector(`.play-again`);
+const answers = Array.from(gameScreenArtist.querySelectorAll(`.main-answer`));
+
+playAgainButton.addEventListener(`click`, () => changeScreen(welcomeScreen));
+
+answers.forEach((answer) => {
+  answer.addEventListener(`click`, () => changeScreen(gameScreenGenre));
+});
 
 export default gameScreenArtist;

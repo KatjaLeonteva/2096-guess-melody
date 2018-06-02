@@ -1,6 +1,7 @@
 /** @module Результат игры: выигрыш */
 
-import {render} from './util.js';
+import {changeScreen, render} from './util';
+import gameScreenArtist from "./game-screen-artist";
 
 const template = `
 <section class="main main--result">
@@ -16,5 +17,8 @@ const template = `
 `;
 
 const resultScreenWin = render(template);
+const playAgainButton = resultScreenWin.querySelector(`.main-replay`);
+
+playAgainButton.addEventListener(`click`, () => changeScreen(gameScreenArtist));
 
 export default resultScreenWin;

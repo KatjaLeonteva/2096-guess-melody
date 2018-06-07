@@ -1,4 +1,4 @@
-import {assert} from 'chai';
+import {assert} from "chai";
 import {calculatePoints} from "./calculate-points";
 
 describe(`Check points calculator`, () => {

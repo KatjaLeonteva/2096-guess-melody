@@ -12,9 +12,9 @@ export const createTimer = (seconds) => {
     tick() {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
-        return this.timeLeft;
+        return true;
       } else {
-        return `Время вышло!`;
+        return false;
       }
     }
   };

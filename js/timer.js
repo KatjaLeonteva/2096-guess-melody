@@ -13,9 +13,8 @@ export const createTimer = (seconds) => {
       if (this.secondsLeft > 0) {
         this.secondsLeft--;
         return true;
-      } else {
-        return false;
       }
+      return false;
     }
   };
 };

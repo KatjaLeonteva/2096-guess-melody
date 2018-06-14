@@ -19,6 +19,6 @@ const template = `
 const welcomeScreen = render(template);
 const playButton = welcomeScreen.querySelector(`.main-play`);
 
-playButton.addEventListener(`click`, () => changeScreen(gameScreenArtist));
+playButton.addEventListener(`click`, () => changeScreen(gameScreenArtist()));
 
 export default welcomeScreen;

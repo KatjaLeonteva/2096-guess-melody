@@ -1,35 +1,13 @@
 /** @module Игра на выбор жанра */
 
 import {changeScreen, render} from '../util';
-import welcomeScreen from "./welcome-screen";
-
+import renderHeader from "./game-header";
 import resultScreenWin from "./result-screen-win";
 import resultScreenTimeup from "./result-screen-timeup";
 import resultScreenLose from "./result-screen-lose";
 
 const template = `
 <section class="main main--level main--level-genre">
-  <a class="play-again play-again__wrap" href="#">
-    <img class="play-again__img" src="/img/melody-logo-ginger.png" alt="logo" width="177" height="76">
-  </a>
-  <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
-    <circle
-      cx="390" cy="390" r="370"
-      class="timer-line"
-      style="filter: url(../#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
-
-    <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-      <span class="timer-value-mins">05</span><!--
-      --><span class="timer-value-dots">:</span><!--
-      --><span class="timer-value-secs">00</span>
-    </div>
-  </svg>
-  <div class="main-mistakes">
-    <img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">
-    <img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">
-    <img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">
-  </div>
-
   <div class="main-wrap">
     <h2 class="title">Выберите инди-рок треки</h2>
     <form class="genre">
@@ -96,15 +74,17 @@ const template = `
 `;
 
 const gameScreenGenre = render(template);
-const playAgainButton = gameScreenGenre.querySelector(`.play-again`);
+// const playAgainButton = gameScreenGenre.querySelector(`.play-again`);
 const form = gameScreenGenre.querySelector(`form.genre`);
 const answers = Array.from(form.querySelectorAll(`input[name="answer"]`));
 const sendAnswerButton = form.querySelector(`.genre-answer-send`);
 
-const onPlayAgainClick = () => {
-  resetScreen();
-  changeScreen(welcomeScreen);
-};
+gameScreenGenre.insertAdjacentElement(`afterbegin`, renderHeader());
+
+// const onPlayAgainClick = () => {
+//   resetScreen();
+//   changeScreen(welcomeScreen);
+// };
 
 const onAnswerChange = () => {
   const someAnswersChecked = answers.some((el) => el.checked === true);
@@ -126,7 +106,7 @@ const resetScreen = () => {
   sendAnswerButton.disabled = true;
 };
 
-playAgainButton.addEventListener(`click`, onPlayAgainClick);
+// playAgainButton.addEventListener(`click`, onPlayAgainClick);
 
 // Кнопка «Ответить» отключена, пока не выбран ни один из вариантов ответа.
 sendAnswerButton.disabled = true;

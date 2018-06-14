@@ -1,6 +1,6 @@
 /** @module Результат игры: выигрыш */
 
-import {changeScreen, render} from './util';
+import {changeScreen, render} from '../util';
 import gameScreenArtist from "./game-screen-artist";
 
 const template = `

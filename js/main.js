@@ -1,4 +1,4 @@
 import {changeScreen} from './util';
-import welcomeScreen from './welcome-screen';
+import welcomeScreen from './game/welcome-screen';
 
 changeScreen(welcomeScreen);

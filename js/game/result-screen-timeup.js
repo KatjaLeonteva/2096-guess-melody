@@ -1,6 +1,6 @@
 /** @module Результат игры: проигрыш время вышло */
 
-import {render, changeScreen} from "./util";
+import {render, changeScreen} from "../util";
 import gameScreenArtist from "./game-screen-artist";
 
 const template = `

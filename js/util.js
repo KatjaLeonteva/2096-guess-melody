@@ -1,5 +1,4 @@
 const app = document.querySelector(`div.app`);
-const mainElement = app.querySelector(`section.main`);
 
 /**
  * Создает DOM-элемент по шаблону.
@@ -14,9 +13,9 @@ export const render = (markup) => {
 
 /**
  * Переключает текущий экран.
- * @param {Node} element Элемент, который нужно отобразить.
+ * @param {Node} screen Экран, который нужно отобразить.
  */
-export const changeScreen = (element) => {
-  mainElement.innerHTML = ``;
-  mainElement.appendChild(element);
+export const changeScreen = (screen) => {
+  const currentScreen = app.querySelector(`section.main`);
+  app.replaceChild(screen, currentScreen);
 };

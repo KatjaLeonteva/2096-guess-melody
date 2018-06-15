@@ -1,6 +1,6 @@
 export const gameSettings = {
   questions: 10,
-  time: 300000, // 5 min in ms
+  totalTime: 300000, // 5 min in ms
   fastAnswerTime: 30000, // 30 sec
   maxMistakes: 3,
   losePoints: -1,

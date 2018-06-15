@@ -1,6 +1,7 @@
 /** @module Приветствие */
 
-import {render, changeScreen} from "../util";
+import {render, changeScreen, msToMinutesAndSeconds} from "../util";
+import {gameSettings} from "../data/game-data";
 import gameScreenArtist from "./game-screen-artist";
 
 const template = `
@@ -9,8 +10,8 @@ const template = `
   <button class="main-play">Начать игру</button>
   <h2 class="title main-title">Правила игры</h2>
   <p class="text main-text">
-    Правила просты&nbsp;— за&nbsp;5 минут ответить на все вопросы.<br>
-    Ошибиться можно 3 раза.<br>
+    Правила просты&nbsp;— за&nbsp;${msToMinutesAndSeconds(gameSettings.totalTime).minutes} минут ответить на все вопросы.<br>
+    Ошибиться можно ${gameSettings.maxMistakes} раза.<br>
     Удачи!
   </p>
 </section>

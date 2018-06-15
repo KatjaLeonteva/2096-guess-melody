@@ -1,10 +1,10 @@
 /** @module Приветствие */
 
 import {render, changeScreen, msToMinutesAndSeconds} from "../util";
-import {gameSettings} from "../data/game-data";
-import gameScreenArtist from "./game-screen-artist";
+import {gameSettings, gameQuestions} from "../data/game-data";
+import gameScreen from "./game-screen";
 
-const template = `
+const welcomeScreenTemplate = `
 <section class="main main--welcome">
   <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
   <button class="main-play">Начать игру</button>
@@ -17,9 +17,9 @@ const template = `
 </section>
 `;
 
-const welcomeScreen = render(template);
+const welcomeScreen = render(welcomeScreenTemplate);
 const playButton = welcomeScreen.querySelector(`.main-play`);
 
-playButton.addEventListener(`click`, () => changeScreen(gameScreenArtist()));
+playButton.addEventListener(`click`, () => changeScreen(gameScreen(gameQuestions[0])));
 
 export default welcomeScreen;

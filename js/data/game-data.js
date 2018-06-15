@@ -7,6 +7,12 @@ export const gameSettings = {
   statistics: [6, 4, 12, 8]
 };
 
+export const initialState = {
+  timeLeft: gameSettings.totalTime,
+  mistakes: 0,
+  answers: []
+};
+
 export const results = {
   timeup: {
     title: `Увы и ах!`,
@@ -75,7 +81,7 @@ export const gameQuestions = [
   {
     type: `guessArtist`,
     track: data[0].src,
-    question: `Кто исполняет эту песню?`,
+    title: `Кто исполняет эту песню?`,
     answers: {
       'answer-1': {track: data[0], correct: true},
       'answer-2': {track: data[1], correct: false},
@@ -85,7 +91,7 @@ export const gameQuestions = [
   {
     type: `guessArtist`,
     track: data[1].src,
-    question: `Кто исполняет эту песню?`,
+    title: `Кто исполняет эту песню?`,
     answers: {
       'answer-1': {track: data[1], correct: true},
       'answer-2': {track: data[3], correct: false},
@@ -95,7 +101,7 @@ export const gameQuestions = [
   {
     type: `guessArtist`,
     track: data[2].src,
-    question: `Кто исполняет эту песню?`,
+    title: `Кто исполняет эту песню?`,
     answers: {
       'answer-1': {track: data[2], correct: true},
       'answer-2': {track: data[5], correct: false},
@@ -105,7 +111,7 @@ export const gameQuestions = [
   {
     type: `guessArtist`,
     track: data[3].src,
-    question: `Кто исполняет эту песню?`,
+    title: `Кто исполняет эту песню?`,
     answers: {
       'answer-1': {track: data[3], correct: true},
       'answer-2': {track: data[4], correct: false},
@@ -115,7 +121,7 @@ export const gameQuestions = [
   {
     type: `guessArtist`,
     track: data[4].src,
-    question: `Кто исполняет эту песню?`,
+    title: `Кто исполняет эту песню?`,
     answers: {
       'answer-1': {track: data[4], correct: true},
       'answer-2': {track: data[2], correct: false},
@@ -125,7 +131,7 @@ export const gameQuestions = [
   {
     type: `guessArtist`,
     track: data[5].src,
-    question: `Кто исполняет эту песню?`,
+    title: `Кто исполняет эту песню?`,
     answers: {
       'answer-1': {track: data[5], correct: true},
       'answer-2': {track: data[3], correct: false},
@@ -134,7 +140,7 @@ export const gameQuestions = [
   },
   {
     type: `chooseGenre`,
-    question: `Выберите R&B треки`,
+    title: `Выберите R&B треки`,
     answers: {
       'answer-1': {track: data[3], correct: true},
       'answer-2': {track: data[0], correct: false},
@@ -144,7 +150,7 @@ export const gameQuestions = [
   },
   {
     type: `chooseGenre`,
-    question: `Выберите Country треки`,
+    title: `Выберите Country треки`,
     answers: {
       'answer-1': {track: data[2], correct: true},
       'answer-2': {track: data[3], correct: false},
@@ -154,7 +160,7 @@ export const gameQuestions = [
   },
   {
     type: `chooseGenre`,
-    question: `Выберите Jazz треки`,
+    title: `Выберите Jazz треки`,
     answers: {
       'answer-1': {track: data[0], correct: true},
       'answer-2': {track: data[2], correct: false},
@@ -164,7 +170,7 @@ export const gameQuestions = [
   },
   {
     type: `chooseGenre`,
-    question: `Выберите Pop треки`,
+    title: `Выберите Pop треки`,
     answers: {
       'answer-1': {track: data[4], correct: true},
       'answer-2': {track: data[0], correct: false},

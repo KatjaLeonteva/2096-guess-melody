@@ -1,10 +1,8 @@
-const TOTAL_QUESTIONS = 10;
-const FAST_ANSWER_TIME = 30000; // 30 sec
-const LOSE_POINTS = -1;
+import {gameSettings} from "../data/game-data";
 
 export const calculatePoints = (answers, attempts) => {
-  if (answers.length < TOTAL_QUESTIONS) {
-    return LOSE_POINTS;
+  if (answers.length < gameSettings.questions) {
+    return gameSettings.losePoints;
   }
 
   let attemptsLeft = attempts;
@@ -13,7 +11,7 @@ export const calculatePoints = (answers, attempts) => {
     if (attemptsLeft > 0) {
       if (answer.correct) {
         points++;
-        if (answer.time * 1000 < FAST_ANSWER_TIME) {
+        if (answer.time * 1000 < gameSettings.fastAnswerTime) {
           points++;
         }
       } else {
@@ -21,7 +19,7 @@ export const calculatePoints = (answers, attempts) => {
         attemptsLeft--;
       }
     } else {
-      points = LOSE_POINTS;
+      points = gameSettings.losePoints;
     }
 
     return points;

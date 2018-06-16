@@ -1,38 +1,3 @@
-export const gameSettings = {
-  totalQuestions: 10,
-  totalTime: 300000, // 5 min in ms
-  fastAnswerTime: 30000, // 30 sec
-  maxMistakes: 3,
-  losePoints: -1,
-  statistics: [6, 4, 12, 8]
-};
-
-export const initialState = {
-  timeLeft: gameSettings.totalTime,
-  mistakes: 0,
-  answers: []
-};
-
-export const gameState = Object.assign({}, initialState);
-
-export const results = {
-  timeup: {
-    title: `Увы и ах!`,
-    description: `Время вышло!<br>Вы не успели отгадать все мелодии`
-  },
-  lose: {
-    title: `Какая жалость!`,
-    description: `У вас закончились все попытки.<br>Ничего, повезёт в следующий раз!`
-  },
-  win: {
-    title: `Вы настоящий меломан!`,
-    description: `За&nbsp;3&nbsp;минуты и 25&nbsp;секунд
-      <br>вы&nbsp;набрали 12 баллов (8 быстрых)
-      <br>совершив 3 ошибки`,
-    comparison: `Вы заняли 2 место из 10. Это&nbsp;лучше чем у&nbsp;80%&nbsp;игроков`
-  }
-};
-
 // Music from https://www.youtube.com/audiolibrary/music?feature=blog
 const data = [
   {
@@ -82,7 +47,7 @@ const data = [
 export const gameQuestions = [
   {
     type: `guessArtist`,
-    track: data[0].src,
+    trackSrc: data[0].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[0], correct: true},
@@ -92,7 +57,7 @@ export const gameQuestions = [
   },
   {
     type: `guessArtist`,
-    track: data[1].src,
+    trackSrc: data[1].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[1], correct: true},
@@ -102,7 +67,7 @@ export const gameQuestions = [
   },
   {
     type: `guessArtist`,
-    track: data[2].src,
+    trackSrc: data[2].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[2], correct: true},
@@ -112,7 +77,7 @@ export const gameQuestions = [
   },
   {
     type: `guessArtist`,
-    track: data[3].src,
+    trackSrc: data[3].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[3], correct: true},
@@ -122,7 +87,7 @@ export const gameQuestions = [
   },
   {
     type: `guessArtist`,
-    track: data[4].src,
+    trackSrc: data[4].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[4], correct: true},
@@ -132,7 +97,7 @@ export const gameQuestions = [
   },
   {
     type: `guessArtist`,
-    track: data[5].src,
+    trackSrc: data[5].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[5], correct: true},

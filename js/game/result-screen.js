@@ -1,13 +1,16 @@
 import {render} from "../util";
-import {gameState, gameSettings, results} from "../data/game-data";
+import {GAME_SETTINGS, INITIAL_STATE, results} from "../data/game";
 import buttonReplay from "./button-replay";
+
+// TODO временно
+const gameState = Object.assign({}, INITIAL_STATE);
 
 let gameResult = () => {
   if (gameState.timeLeft === 0) {
     return `timeup`;
   }
 
-  if (gameState.mistakes === gameSettings.maxMistakes) {
+  if (gameState.mistakes === GAME_SETTINGS.maxMistakes) {
     return `lose`;
   }
 

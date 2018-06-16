@@ -1,22 +1,18 @@
 import {changeScreen, render} from '../util';
-import {gameState, gameQuestions, gameSettings} from "../data/game-data";
+import {gameQuestions} from "../data/game-data";
+import {GAME_SETTINGS} from "../data/game";
 import gameHeader from "./game-header";
 import resultScreen from "./result-screen";
+import player from "./player";
 
-const gameScreen = (question) => {
+const gameScreen = (gameState) => {
+  const question = gameQuestions[gameState.level];
+
   const artistTemplate = `
     <section class="main main--level main--level-artist">
       <div class="main-wrap">
         <h2 class="title main-title">${question.title}</h2>
-        <div class="player-wrapper">
-          <div class="player">
-            <audio src="${question.track}"></audio>
-            <button class="player-control player-control--play"></button>
-            <div class="player-track">
-              <span class="player-status"></span>
-            </div>
-          </div>
-        </div>
+        ${player(question.trackSrc)}
         <form class="main-list">
           ${[...Object.entries(question.answers)].map(([answerValue, answerData], index) =>
           `<div class="main-answer-wrapper">
@@ -39,15 +35,7 @@ const gameScreen = (question) => {
         <form class="genre">
           ${[...Object.entries(question.answers)].map(([answerValue, answerData], index) =>
           `<div class="genre-answer">
-            <div class="player-wrapper">
-              <div class="player">
-                <audio src="${answerData.track.src}"></audio>
-                <button class="player-control player-control--play"></button>
-                <div class="player-track">
-                  <span class="player-status"></span>
-                </div>
-              </div>
-            </div>
+            ${player(answerData.track.src)}
             <input type="checkbox" name="answer" value="${answerValue}" id="a-${index + 1}">
             <label class="genre-answer-check" for="a-${index + 1}"></label>
           </div>`).join(``)}
@@ -74,15 +62,15 @@ const gameScreen = (question) => {
 
   const onAnswerSend = (userAnswers) => {
     event.preventDefault();
-    const questionIndex = gameState.answers.length;
 
     gameState.answers.push({
       time: 1000,
       correct: checkAnswers(userAnswers)
     });
 
-    if ((questionIndex + 1) < gameSettings.totalQuestions) {
-      changeScreen(gameScreen(gameQuestions[questionIndex + 1]));
+    if ((gameState.level + 1) < GAME_SETTINGS.totalQuestions) {
+      gameState.level++;
+      changeScreen(gameScreen(gameState));
     } else {
       changeScreen(resultScreen);
     }

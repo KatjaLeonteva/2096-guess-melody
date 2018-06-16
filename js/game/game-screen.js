@@ -6,6 +6,7 @@ import resultScreen from "./result-screen";
 import player from "./player";
 
 const gameScreen = (gameState) => {
+  console.log(gameState);
   const question = gameQuestions[gameState.level];
 
   const artistTemplate = `
@@ -54,25 +55,28 @@ const gameScreen = (gameState) => {
   const gameScreenElement = render(questionTemplateMap[question.type]);
   gameScreenElement.insertAdjacentElement(`afterbegin`, gameHeader(gameState));
 
-  // TODO Проверять ответы
   const checkAnswers = (answers) => {
-    console.log(answers);
+    // TODO Проверять ответы. Если неверно gameState.mistakes++ и return false
     return true;
   };
 
   const onAnswerSend = (userAnswers) => {
     event.preventDefault();
 
+    let answerTime = 29000; // test time
+
+    gameState.timeLeft = Math.max((gameState.timeLeft - answerTime), 0);
+
     gameState.answers.push({
-      time: 1000,
+      time: answerTime,
       correct: checkAnswers(userAnswers)
     });
 
-    if ((gameState.level + 1) < GAME_SETTINGS.totalQuestions) {
+    if ((gameState.mistakes === GAME_SETTINGS.maxMistakes) || (gameState.timeLeft === 0) || ((gameState.level + 1) === GAME_SETTINGS.totalQuestions)) {
+      changeScreen(resultScreen(gameState));
+    } else {
       gameState.level++;
       changeScreen(gameScreen(gameState));
-    } else {
-      changeScreen(resultScreen(gameState));
     }
   };
 

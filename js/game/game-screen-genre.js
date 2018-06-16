@@ -2,9 +2,6 @@
 
 import {changeScreen, render} from '../util';
 import renderHeader from "./game-header";
-import resultScreenWin from "./result-screen-win";
-import resultScreenTimeup from "./result-screen-timeup";
-import resultScreenLose from "./result-screen-lose";
 
 const renderScreenGenre = (state) => {
   const template = `
@@ -82,10 +79,6 @@ const renderScreenGenre = (state) => {
 
   gameScreenGenre.insertAdjacentElement(`afterbegin`, renderHeader());
 
-  // const onPlayAgainClick = () => {
-  //   resetScreen();
-  //   changeScreen(welcomeScreen);
-  // };
 
   const onAnswerChange = () => {
     const someAnswersChecked = answers.some((el) => el.checked === true);
@@ -93,10 +86,8 @@ const renderScreenGenre = (state) => {
   };
 
   const onAnswerSend = () => {
-    const resultScreens = [resultScreenWin, resultScreenTimeup, resultScreenLose];
-    const randomScreen = resultScreens[Math.floor(Math.random() * resultScreens.length)];
     resetScreen();
-    changeScreen(randomScreen());
+    // changeScreen(randomScreen());
   };
 
   const resetScreen = () => {

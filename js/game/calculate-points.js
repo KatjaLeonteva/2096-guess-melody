@@ -1,25 +1,26 @@
-import {gameSettings} from "../data/game-data";
+import {GAME_SETTINGS} from "../data/game";
 
-export const calculatePoints = (answers, attempts) => {
-  if (answers.length < gameSettings.questions) {
-    return gameSettings.losePoints;
+export const calculatePoints = (gameState) => {
+  if (gameState.answers.length < GAME_SETTINGS.totalQuestions) {
+    return GAME_SETTINGS.losePoints;
   }
 
-  let attemptsLeft = attempts;
+  let attemptsLeft = GAME_SETTINGS.maxMistakes;
 
-  return answers.reduce((points, answer) => {
+  return gameState.answers.reduce((points, answer) => {
     if (attemptsLeft > 0) {
       if (answer.correct) {
-        points++;
-        if (answer.time * 1000 < gameSettings.fastAnswerTime) {
-          points++;
+        if (answer.time < GAME_SETTINGS.fastAnswerTime) {
+          points += GAME_SETTINGS.fastPoints;
+        } else {
+          points += GAME_SETTINGS.regularPoints;
         }
       } else {
-        points -= 2;
+        points += GAME_SETTINGS.wrongPoints;
         attemptsLeft--;
       }
     } else {
-      points = gameSettings.losePoints;
+      points = GAME_SETTINGS.losePoints;
     }
 
     return points;

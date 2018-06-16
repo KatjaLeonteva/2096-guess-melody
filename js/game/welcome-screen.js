@@ -1,7 +1,10 @@
 /** @module Приветствие */
 
-import {render, msToMinutesAndSeconds} from "../util";
+import {render, msToMinutesAndSeconds, pluralize} from "../util";
 import {GAME_SETTINGS, startGame} from "../data/game";
+
+const totalTimeMin = msToMinutesAndSeconds(GAME_SETTINGS.totalTime).minutes;
+const maxMistakes = GAME_SETTINGS.maxMistakes;
 
 const welcomeScreenTemplate = `
 <section class="main main--welcome">
@@ -9,8 +12,8 @@ const welcomeScreenTemplate = `
   <button class="main-play">Начать игру</button>
   <h2 class="title main-title">Правила игры</h2>
   <p class="text main-text">
-    Правила просты&nbsp;— за&nbsp;${msToMinutesAndSeconds(GAME_SETTINGS.totalTime).minutes} минут ответить на все вопросы.<br>
-    Ошибиться можно ${GAME_SETTINGS.maxMistakes} раза.<br>
+    Правила просты&nbsp;— за&nbsp;${totalTimeMin} ${pluralize(totalTimeMin, `minutes`)} ответить на все вопросы.<br>
+    Ошибиться можно ${maxMistakes} ${pluralize(maxMistakes, `attempts`)}.<br>
     Удачи!
   </p>
 </section>

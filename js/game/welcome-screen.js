@@ -1,8 +1,7 @@
 /** @module Приветствие */
 
-import {render, changeScreen, msToMinutesAndSeconds} from "../util";
-import {GAME_SETTINGS, INITIAL_STATE} from "../data/game";
-import gameScreen from "./game-screen";
+import {render, msToMinutesAndSeconds} from "../util";
+import {GAME_SETTINGS, startGame} from "../data/game";
 
 const welcomeScreenTemplate = `
 <section class="main main--welcome">
@@ -20,13 +19,6 @@ const welcomeScreenTemplate = `
 const welcomeScreen = render(welcomeScreenTemplate);
 const playButton = welcomeScreen.querySelector(`.main-play`);
 
-let game;
-
-const startGame = () => {
-  game = Object.assign({}, INITIAL_STATE);
-  changeScreen(gameScreen(game));
-};
-
-playButton.addEventListener(`click`, startGame);
+playButton.addEventListener(`click`, () => startGame());
 
 export default welcomeScreen;

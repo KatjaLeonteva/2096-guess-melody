@@ -72,7 +72,7 @@ const gameScreen = (gameState) => {
       gameState.level++;
       changeScreen(gameScreen(gameState));
     } else {
-      changeScreen(resultScreen);
+      changeScreen(resultScreen(gameState));
     }
   };
 

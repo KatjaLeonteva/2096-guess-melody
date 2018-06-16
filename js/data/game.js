@@ -1,3 +1,6 @@
+import {changeScreen} from "../util";
+import gameScreen from "../game/game-screen";
+
 export const GAME_SETTINGS = {
   totalQuestions: 10,
   totalTime: 300000, // 5 min in ms
@@ -30,4 +33,10 @@ export const results = {
       <br>совершив 3 ошибки`,
     comparison: `Вы заняли 2 место из 10. Это&nbsp;лучше чем у&nbsp;80%&nbsp;игроков`
   }
+};
+
+export const startGame = () => {
+  let gameState = Object.assign({}, INITIAL_STATE);
+  gameState.answers = [];
+  changeScreen(gameScreen(gameState));
 };

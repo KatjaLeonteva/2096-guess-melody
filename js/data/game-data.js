@@ -1,5 +1,5 @@
 export const gameSettings = {
-  questions: 10,
+  totalQuestions: 10,
   totalTime: 300000, // 5 min in ms
   fastAnswerTime: 30000, // 30 sec
   maxMistakes: 3,
@@ -13,6 +13,8 @@ export const initialState = {
   answers: []
 };
 
+export const gameState = Object.assign({}, initialState);
+
 export const results = {
   timeup: {
     title: `Увы и ах!`,
@@ -24,7 +26,7 @@ export const results = {
   },
   win: {
     title: `Вы настоящий меломан!`,
-    stat: `За&nbsp;3&nbsp;минуты и 25&nbsp;секунд
+    description: `За&nbsp;3&nbsp;минуты и 25&nbsp;секунд
       <br>вы&nbsp;набрали 12 баллов (8 быстрых)
       <br>совершив 3 ошибки`,
     comparison: `Вы заняли 2 место из 10. Это&nbsp;лучше чем у&nbsp;80%&nbsp;игроков`
@@ -83,9 +85,9 @@ export const gameQuestions = [
     track: data[0].src,
     title: `Кто исполняет эту песню?`,
     answers: {
-      'answer-1': {track: data[0], correct: true},
-      'answer-2': {track: data[1], correct: false},
-      'answer-3': {track: data[2], correct: false}
+      'val-1': {track: data[0], correct: true},
+      'val-2': {track: data[1], correct: false},
+      'val-3': {track: data[2], correct: false}
     }
   },
   {
@@ -93,9 +95,9 @@ export const gameQuestions = [
     track: data[1].src,
     title: `Кто исполняет эту песню?`,
     answers: {
-      'answer-1': {track: data[1], correct: true},
-      'answer-2': {track: data[3], correct: false},
-      'answer-3': {track: data[4], correct: false}
+      'val-1': {track: data[1], correct: true},
+      'val-2': {track: data[3], correct: false},
+      'val-3': {track: data[4], correct: false}
     }
   },
   {
@@ -103,9 +105,9 @@ export const gameQuestions = [
     track: data[2].src,
     title: `Кто исполняет эту песню?`,
     answers: {
-      'answer-1': {track: data[2], correct: true},
-      'answer-2': {track: data[5], correct: false},
-      'answer-3': {track: data[1], correct: false}
+      'val-1': {track: data[2], correct: true},
+      'val-2': {track: data[5], correct: false},
+      'val-3': {track: data[1], correct: false}
     }
   },
   {
@@ -113,9 +115,9 @@ export const gameQuestions = [
     track: data[3].src,
     title: `Кто исполняет эту песню?`,
     answers: {
-      'answer-1': {track: data[3], correct: true},
-      'answer-2': {track: data[4], correct: false},
-      'answer-3': {track: data[5], correct: false}
+      'val-1': {track: data[3], correct: true},
+      'val-2': {track: data[4], correct: false},
+      'val-3': {track: data[5], correct: false}
     }
   },
   {
@@ -123,9 +125,9 @@ export const gameQuestions = [
     track: data[4].src,
     title: `Кто исполняет эту песню?`,
     answers: {
-      'answer-1': {track: data[4], correct: true},
-      'answer-2': {track: data[2], correct: false},
-      'answer-3': {track: data[3], correct: false}
+      'val-1': {track: data[4], correct: true},
+      'val-2': {track: data[2], correct: false},
+      'val-3': {track: data[3], correct: false}
     }
   },
   {
@@ -133,9 +135,9 @@ export const gameQuestions = [
     track: data[5].src,
     title: `Кто исполняет эту песню?`,
     answers: {
-      'answer-1': {track: data[5], correct: true},
-      'answer-2': {track: data[3], correct: false},
-      'answer-3': {track: data[4], correct: false}
+      'val-1': {track: data[5], correct: true},
+      'val-2': {track: data[3], correct: false},
+      'val-3': {track: data[4], correct: false}
     }
   },
   {
@@ -179,5 +181,3 @@ export const gameQuestions = [
     }
   }
 ];
-
-export let userResults = [];

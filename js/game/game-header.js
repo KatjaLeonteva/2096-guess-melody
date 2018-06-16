@@ -29,8 +29,15 @@ const gameHeader = (state) => {
 
   const gameHeaderElement = render(gameHeaderTemplate);
 
+  // 3.6. В левом верхнем углу экрана появляется ссылка на приветственный экран.
+  // Нажатие на эту ссылку возвращает пользователя на этот экран.
+  // При нажатии на эту ссылку, пользователю сначала показывается диалоговое окно
+  // с предупреждением, что вся его игра будет потеряна.
   const playAgainButton = gameHeaderElement.querySelector(`.play-again`);
-  playAgainButton.addEventListener(`click`, () => changeScreen(welcomeScreen));
+  playAgainButton.addEventListener(`click`, () => {
+    // TODO Добавить модальное окно
+    changeScreen(welcomeScreen);
+  });
 
   return gameHeaderElement;
 };

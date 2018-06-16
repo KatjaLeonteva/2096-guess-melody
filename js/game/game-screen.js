@@ -1,6 +1,7 @@
 import {changeScreen, render} from '../util';
-import {initialState, gameQuestions} from "../data/game-data";
+import {gameState, gameQuestions, gameSettings} from "../data/game-data";
 import gameHeader from "./game-header";
+import resultScreen from "./result-screen";
 
 const gameScreen = (question) => {
   const artistTemplate = `
@@ -10,17 +11,17 @@ const gameScreen = (question) => {
         <div class="player-wrapper">
           <div class="player">
             <audio src="${question.track}"></audio>
-            <button class="player-control player-control--pause"></button>
+            <button class="player-control player-control--play"></button>
             <div class="player-track">
               <span class="player-status"></span>
             </div>
           </div>
         </div>
         <form class="main-list">
-          ${[...Object.entries(question.answers)].map(([answerId, answerData], index) =>
+          ${[...Object.entries(question.answers)].map(([answerValue, answerData], index) =>
           `<div class="main-answer-wrapper">
-            <input class="main-answer-r" type="radio" id="${answerId}" name="answer" value="val-${index + 1}"/>
-            <label class="main-answer" for="${answerId}">
+            <input class="main-answer-r" type="radio" id="answer-${index + 1}" name="answer" value="${answerValue}"/>
+            <label class="main-answer" for="answer-${index + 1}">
               <img class="main-answer-preview" src="${answerData.track.image}"
                    alt="${answerData.track.name}" width="134" height="134">
               ${answerData.track.name}
@@ -36,7 +37,7 @@ const gameScreen = (question) => {
       <div class="main-wrap">
         <h2 class="title">${question.title}</h2>
         <form class="genre">
-          ${[...Object.entries(question.answers)].map(([answerId, answerData], index) =>
+          ${[...Object.entries(question.answers)].map(([answerValue, answerData], index) =>
           `<div class="genre-answer">
             <div class="player-wrapper">
               <div class="player">
@@ -47,7 +48,7 @@ const gameScreen = (question) => {
                 </div>
               </div>
             </div>
-            <input type="checkbox" name="answer" value="answer-1" id="a-${index + 1}">
+            <input type="checkbox" name="answer" value="${answerValue}" id="a-${index + 1}">
             <label class="genre-answer-check" for="a-${index + 1}"></label>
           </div>`).join(``)}
 
@@ -63,20 +64,40 @@ const gameScreen = (question) => {
   };
 
   const gameScreenElement = render(questionTemplateMap[question.type]);
-  gameScreenElement.insertAdjacentElement(`afterbegin`, gameHeader(initialState));
+  gameScreenElement.insertAdjacentElement(`afterbegin`, gameHeader(gameState));
 
-  const onAnswerSend = () => {
-    changeScreen(gameScreen(gameQuestions[6]));
+  // TODO Проверять ответы
+  const checkAnswers = (answers) => {
+    console.log(answers);
+    return true;
   };
 
-  if (question.type == `guessArtist`) {
-    const artistForm = gameScreenElement.querySelector(`form.main-list`);
-    const artistAnswers = Array.from(artistForm.querySelectorAll(`.main-answer`));
-    artistAnswers.forEach((answer) => {
-      // Записывать ответ и время в gameState
-      answer.addEventListener(`click`, onAnswerSend);
+  const onAnswerSend = (userAnswers) => {
+    event.preventDefault();
+    const questionIndex = gameState.answers.length;
+
+    gameState.answers.push({
+      time: 1000,
+      correct: checkAnswers(userAnswers)
     });
-  } else if (question.type == `chooseGenre`) {
+
+    if ((questionIndex + 1) < gameSettings.totalQuestions) {
+      changeScreen(gameScreen(gameQuestions[questionIndex + 1]));
+    } else {
+      changeScreen(resultScreen);
+    }
+  };
+
+  if (question.type === `guessArtist`) {
+    const artistForm = gameScreenElement.querySelector(`form.main-list`);
+    const artistAnswers = Array.from(artistForm.querySelectorAll(`input[name="answer"]`));
+    artistAnswers.forEach((answer) => {
+      answer.addEventListener(`change`, () => {
+        const checkedAnswers = artistAnswers.filter((input) => input.checked).map((input) => input.value);
+        onAnswerSend(checkedAnswers);
+      });
+    });
+  } else if (question.type === `chooseGenre`) {
     const genreForm = gameScreenElement.querySelector(`form.genre`);
     const genreAnswers = Array.from(genreForm.querySelectorAll(`input[name="answer"]`));
     const sendAnswerButton = genreForm.querySelector(`.genre-answer-send`);
@@ -93,7 +114,10 @@ const gameScreen = (question) => {
       answer.addEventListener(`change`, onAnswerChange);
     });
 
-    sendAnswerButton.addEventListener(`click`, onAnswerSend);
+    sendAnswerButton.addEventListener(`click`, () => {
+      const checkedAnswers = genreAnswers.filter((input) => input.checked).map((input) => input.value);
+      onAnswerSend(checkedAnswers);
+    });
   }
 
   return gameScreenElement;

@@ -11,7 +11,7 @@ const testAnswersSuccess1 =
     points: 20
   };
 
-// Средний рехультат
+// Средний результат
 const testAnswersSuccess2 =
   {
     timeLeft: 30,

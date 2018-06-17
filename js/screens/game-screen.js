@@ -1,9 +1,9 @@
-import {changeScreen} from '../util';
+import changeScreen from '../game/change-screen';
 import {GAME_SETTINGS, gameQuestions} from "../data/game-data";
-import {checkAnswers} from "../data/game";
 import screenArtist from "./game-screen-artist";
 import screenGenre from "./game-screen-genre";
-import gameHeader from "./game-header";
+import gameHeader from "../components/header";
+import checkAnswers from "../game/check-answers";
 import resultScreen from "./result-screen";
 
 const gameScreen = (gameState) => {

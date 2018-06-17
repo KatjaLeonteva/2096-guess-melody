@@ -1,5 +1,7 @@
-import {changeScreen, render, msToMinutesAndSeconds} from "../util";
-import welcomeScreen from "./welcome-screen";
+import {msToMinutesAndSeconds} from "../util";
+import render from "../render";
+import changeScreen from '../game/change-screen';
+import welcomeScreen from "../screens/welcome-screen";
 
 const gameHeader = (state) => {
   const gameHeaderTemplate = `
@@ -21,8 +23,8 @@ const gameHeader = (state) => {
     </svg>
     <div class="main-mistakes">
       ${new Array(state.mistakes)
-      .fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`)
-      .join(``)}
+    .fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`)
+    .join(``)}
     </div>
   </div>
   `;

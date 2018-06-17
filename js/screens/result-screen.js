@@ -1,15 +1,16 @@
-import {render} from "../util";
-import buttonReplay from "./button-replay";
-import {showResult} from "./show-result";
+import render from "../render";
+import buttonReplay from "../components/button-replay";
+import {showResult} from "../game/show-result";
 
 const resultScreen = (gameState) => {
+  const result = showResult(gameState);
   const resultScreenTemplate = `
   <section class="main main--result">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
   
-    <h2 class="title">${showResult(gameState).title}</h2>
-    <div class="main-stat">${showResult(gameState).description}</div>
-    <span class="main-comparison">${showResult(gameState).comparison}</span> <!-- TODO Как показывать только для win? -->
+    <h2 class="title">${result.title}</h2>
+    <div class="main-stat">${result.description}</div>
+    <span class="main-comparison">${result.comparison}</span> <!-- TODO Как показывать только для win? -->
   </section>
   `;
 

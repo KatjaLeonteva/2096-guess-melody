@@ -42,6 +42,33 @@ const gameScreen = (gameState) => {
   const gameScreenElement = questionScreenMap[question.type](question, onAnswerSend);
   gameScreenElement.insertAdjacentElement(`afterbegin`, gameHeader(gameState));
 
+  const allPlayers = Array.from(gameScreenElement.querySelectorAll(`.player`));
+
+  const pauseTrack = (player) => {
+    player.querySelector(`audio`).pause();
+    player.querySelector(`.player-control`).classList.replace(`player-control--pause`, `player-control--play`);
+  };
+
+  const playTrack = (player) => {
+    player.querySelector(`audio`).play();
+    player.querySelector(`.player-control`).classList.replace(`player-control--play`, `player-control--pause`);
+  };
+
+  allPlayers.forEach((player) => {
+    player.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      const selectedTrack = player.querySelector(`audio`);
+      let isPlaying = (selectedTrack.duration > 0 && !selectedTrack.paused);
+
+      if (isPlaying) {
+        pauseTrack(player);
+      } else {
+        allPlayers.forEach((plr) => pauseTrack(plr));
+        playTrack(player);
+      }
+    });
+  });
+
   return gameScreenElement;
 };
 

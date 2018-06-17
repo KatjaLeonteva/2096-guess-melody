@@ -1,6 +1,5 @@
 import {msToMinutesAndSeconds, pluralize} from "../util";
-import {GAME_SETTINGS} from "../data/game";
-import {statistics} from "../data/game-data";
+import {GAME_SETTINGS, statistics} from "../data/game-data";
 import {calculatePoints} from "./calculate-points";
 
 const getResult = (state) => {
@@ -8,7 +7,7 @@ const getResult = (state) => {
     return `timeup`;
   }
 
-  if (state.mistakes === GAME_SETTINGS.maxMistakes) {
+  if (state.mistakes > GAME_SETTINGS.maxMistakes) {
     return `lose`;
   }
 

@@ -1,6 +1,6 @@
 import {changeScreen} from '../util';
-import {gameQuestions} from "../data/game-data";
-import {GAME_SETTINGS, checkAnswers} from "../data/game";
+import {GAME_SETTINGS, gameQuestions} from "../data/game-data";
+import {checkAnswers} from "../data/game";
 import screenArtist from "./game-screen-artist";
 import screenGenre from "./game-screen-genre";
 import gameHeader from "./game-header";
@@ -31,7 +31,7 @@ const gameScreen = (gameState) => {
       correct: isCorrect
     });
 
-    if ((gameState.mistakes === GAME_SETTINGS.maxMistakes) || (gameState.timeLeft === 0) || ((gameState.level + 1) === GAME_SETTINGS.totalQuestions)) {
+    if ((gameState.mistakes > GAME_SETTINGS.maxMistakes) || (gameState.timeLeft === 0) || ((gameState.level + 1) === GAME_SETTINGS.totalQuestions)) {
       changeScreen(resultScreen(gameState));
     } else {
       gameState.level++;

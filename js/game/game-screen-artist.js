@@ -1,6 +1,6 @@
 /** @module Игра на выбор исполнителя */
 
-import {render} from "../util";
+import {render} from '../util';
 import player from "./player";
 
 const screenArtist = (question, callback) => {

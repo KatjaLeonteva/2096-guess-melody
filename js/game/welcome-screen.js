@@ -1,7 +1,8 @@
 /** @module Приветствие */
 
 import {render, msToMinutesAndSeconds, pluralize} from "../util";
-import {GAME_SETTINGS, startGame} from "../data/game";
+import {GAME_SETTINGS} from "../data/game-data";
+import {startGame} from "../data/game";
 
 const totalTimeMin = msToMinutesAndSeconds(GAME_SETTINGS.totalTime).minutes;
 const maxMistakes = GAME_SETTINGS.maxMistakes;

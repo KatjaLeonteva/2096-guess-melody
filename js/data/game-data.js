@@ -1,3 +1,14 @@
+export const GAME_SETTINGS = {
+  totalQuestions: 10,
+  totalTime: 300000, // 5 min in ms
+  fastAnswerTime: 30000, // 30 sec in ms
+  maxMistakes: 2,
+  losePoints: -1,
+  regularPoints: 1,
+  fastPoints: 2,
+  wrongPoints: -2
+};
+
 // Music from https://www.youtube.com/audiolibrary/music?feature=blog
 const data = [
   {

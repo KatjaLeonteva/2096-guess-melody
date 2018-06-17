@@ -1,28 +1,16 @@
-import {GAME_SETTINGS} from "../data/game";
+import {GAME_SETTINGS} from "../data/game-data";
 
 export const calculatePoints = (gameState) => {
-  if (gameState.answers.length < GAME_SETTINGS.totalQuestions) {
+  if ((gameState.answers.length < GAME_SETTINGS.totalQuestions) || (gameState.mistakes > GAME_SETTINGS.maxMistakes)) {
     return GAME_SETTINGS.losePoints;
   }
 
-  let attemptsLeft = GAME_SETTINGS.maxMistakes;
-
   return gameState.answers.reduce((points, answer) => {
-    if (attemptsLeft > 0) {
-      if (answer.correct) {
-        if (answer.time < GAME_SETTINGS.fastAnswerTime) {
-          points += GAME_SETTINGS.fastPoints;
-        } else {
-          points += GAME_SETTINGS.regularPoints;
-        }
-      } else {
-        points += GAME_SETTINGS.wrongPoints;
-        attemptsLeft--;
-      }
+    if (answer.correct) {
+      points += (answer.time < GAME_SETTINGS.fastAnswerTime) ? GAME_SETTINGS.fastPoints : GAME_SETTINGS.regularPoints;
     } else {
-      points = GAME_SETTINGS.losePoints;
+      points += GAME_SETTINGS.wrongPoints;
     }
-
     return points;
   }, 0);
 };

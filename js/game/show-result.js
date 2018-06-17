@@ -22,7 +22,7 @@ export const showResult = (gameState) => {
 
   const userPoints = calculatePoints(gameState);
   const gameTime = msToMinutesAndSeconds(GAME_SETTINGS.totalTime - gameState.timeLeft);
-  const fastAnswersPoints = gameState.answers.filter((answer) => answer.time < GAME_SETTINGS.fastAnswerTime).length * GAME_SETTINGS.fastPoints;
+  const fastAnswers = gameState.answers.filter((answer) => answer.correct && answer.time < GAME_SETTINGS.fastAnswerTime).length;
   const updatedStatistics = statistics.concat(userPoints).sort((a, b) => b - a);
   const players = updatedStatistics.length;
   const place = updatedStatistics.indexOf(userPoints) + 1;
@@ -31,7 +31,7 @@ export const showResult = (gameState) => {
   return {
     title: `Вы настоящий меломан!`,
     description: `За&nbsp;${gameTime.minutes}&nbsp;${pluralize(gameTime.minutes, `minutes`)} и ${gameTime.seconds}&nbsp;${pluralize(gameTime.seconds, `seconds`)}
-      <br>вы&nbsp;набрали ${userPoints} ${pluralize(userPoints, `points`)} (${fastAnswersPoints} быстрых)
+      <br>вы&nbsp;набрали ${userPoints} ${pluralize(userPoints, `points`)} (${fastAnswers} ${pluralize(fastAnswers, `fast`)})
       <br>совершив ${gameState.mistakes}&nbsp;${pluralize(gameState.mistakes, `mistakes`)}`,
     comparison: `Вы заняли ${place} место из ${players}. Это&nbsp;лучше, чем у&nbsp;${rate}%&nbsp;игроков`
   };

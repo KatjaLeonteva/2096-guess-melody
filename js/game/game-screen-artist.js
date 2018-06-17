@@ -1,65 +1,42 @@
 /** @module Игра на выбор исполнителя */
 
-import {render, changeScreen} from "../util";
-import gameScreenGenre from "./game-screen-genre";
-import renderHeader from "./game-header";
+import {render} from "../util";
+import player from "./player";
 
-const renderScreenArtist = (state) => {
+const screenArtist = (question, callback) => {
   const template = `
   <section class="main main--level main--level-artist">
     <div class="main-wrap">
-      <h2 class="title main-title">Кто исполняет эту песню?</h2>
-      <div class="player-wrapper">
-        <div class="player">
-          <audio></audio>
-          <button class="player-control player-control--pause"></button>
-          <div class="player-track">
-            <span class="player-status"></span>
-          </div>
-        </div>
-      </div>
+      <h2 class="title main-title">${question.title}</h2>
+      ${player(question.trackSrc)}
       <form class="main-list">
+        ${[...Object.entries(question.answers)].map(([answerValue, answerData], index) => `
         <div class="main-answer-wrapper">
-          <input class="main-answer-r" type="radio" id="answer-1" name="answer" value="val-1"/>
-          <label class="main-answer" for="answer-1">
-            <img class="main-answer-preview" src="http://placehold.it/134x134"
-                 alt="Пелагея" width="134" height="134">
-            Пелагея
+          <input class="main-answer-r" type="radio" id="answer-${index + 1}" name="answer" value="${answerValue}"/>
+          <label class="main-answer" for="answer-${index + 1}">
+            <img class="main-answer-preview" src="${answerData.track.image}"
+                 alt="${answerData.track.name}" width="134" height="134">
+            ${answerData.track.name}
           </label>
-        </div>
-
-        <div class="main-answer-wrapper">
-          <input class="main-answer-r" type="radio" id="answer-2" name="answer" value="val-2"/>
-          <label class="main-answer" for="answer-2">
-            <img class="main-answer-preview" src="http://placehold.it/134x134"
-                 alt="Краснознаменная дивизия имени моей бабушки" width="134" height="134">
-            Краснознаменная дивизия имени моей бабушки
-          </label>
-        </div>
-
-        <div class="main-answer-wrapper">
-          <input class="main-answer-r" type="radio" id="answer-3" name="answer" value="val-3"/>
-          <label class="main-answer" for="answer-3">
-            <img class="main-answer-preview" src="http://placehold.it/134x134"
-                 alt="Lorde" width="134" height="134">
-            Lorde
-          </label>
-        </div>
+        </div>`).join(``)}
       </form>
     </div>
   </section>
   `;
 
-  const gameScreenArtist = render(template);
-  const answers = Array.from(gameScreenArtist.querySelectorAll(`.main-answer`));
+  const screenArtistElement = render(template);
 
-  gameScreenArtist.insertAdjacentElement(`afterbegin`, renderHeader());
+  const artistForm = screenArtistElement.querySelector(`form.main-list`);
+  const artistAnswers = Array.from(artistForm.querySelectorAll(`input[name="answer"]`));
 
-  answers.forEach((answer) => {
-    answer.addEventListener(`click`, () => changeScreen(gameScreenGenre()));
+  artistAnswers.forEach((answer) => {
+    answer.addEventListener(`change`, () => {
+      const checkedAnswers = artistAnswers.filter((input) => input.checked).map((input) => input.value);
+      callback(checkedAnswers);
+    });
   });
 
-  return gameScreenArtist;
+  return screenArtistElement;
 };
 
-export default renderScreenArtist;
+export default screenArtist;

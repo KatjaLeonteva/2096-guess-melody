@@ -1,115 +1,49 @@
 /** @module Игра на выбор жанра */
 
-import {changeScreen, render} from '../util';
-import renderHeader from "./game-header";
+import {render} from '../util';
+import player from "./player";
 
-const renderScreenGenre = (state) => {
+const screenGenre = (question, callback) => {
   const template = `
   <section class="main main--level main--level-genre">
     <div class="main-wrap">
-      <h2 class="title">Выберите инди-рок треки</h2>
+      <h2 class="title">${question.title}</h2>
       <form class="genre">
+        ${[...Object.entries(question.answers)].map(([answerValue, answerData], index) => `
         <div class="genre-answer">
-          <div class="player-wrapper">
-            <div class="player">
-              <audio></audio>
-              <button class="player-control player-control--pause"></button>
-              <div class="player-track">
-                <span class="player-status"></span>
-              </div>
-            </div>
-          </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-1">
-          <label class="genre-answer-check" for="a-1"></label>
-        </div>
-
-        <div class="genre-answer">
-          <div class="player-wrapper">
-            <div class="player">
-              <audio></audio>
-              <button class="player-control player-control--play"></button>
-              <div class="player-track">
-                <span class="player-status"></span>
-              </div>
-            </div>
-          </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-2">
-          <label class="genre-answer-check" for="a-2"></label>
-        </div>
-
-        <div class="genre-answer">
-          <div class="player-wrapper">
-            <div class="player">
-              <audio></audio>
-              <button class="player-control player-control--play"></button>
-              <div class="player-track">
-                <span class="player-status"></span>
-              </div>
-            </div>
-          </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-3">
-          <label class="genre-answer-check" for="a-3"></label>
-        </div>
-
-        <div class="genre-answer">
-          <div class="player-wrapper">
-            <div class="player">
-              <audio></audio>
-              <button class="player-control player-control--play"></button>
-              <div class="player-track">
-                <span class="player-status"></span>
-              </div>
-            </div>
-          </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-4">
-          <label class="genre-answer-check" for="a-4"></label>
-        </div>
-
+          ${player(answerData.track.src)}
+          <input type="checkbox" name="answer" value="${answerValue}" id="a-${index + 1}">
+          <label class="genre-answer-check" for="a-${index + 1}"></label>
+        </div>`).join(``)}
         <button class="genre-answer-send" type="submit">Ответить</button>
       </form>
     </div>
   </section>
   `;
 
-  const gameScreenGenre = render(template);
-  // const playAgainButton = gameScreenGenre.querySelector(`.play-again`);
-  const form = gameScreenGenre.querySelector(`form.genre`);
-  const answers = Array.from(form.querySelectorAll(`input[name="answer"]`));
-  const sendAnswerButton = form.querySelector(`.genre-answer-send`);
-
-  gameScreenGenre.insertAdjacentElement(`afterbegin`, renderHeader());
-
+  const screenGenreElement = render(template);
+  const genreForm = screenGenreElement.querySelector(`form.genre`);
+  const genreAnswers = Array.from(genreForm.querySelectorAll(`input[name="answer"]`));
+  const sendAnswerButton = genreForm.querySelector(`.genre-answer-send`);
 
   const onAnswerChange = () => {
-    const someAnswersChecked = answers.some((el) => el.checked === true);
+    const someAnswersChecked = genreAnswers.some((el) => el.checked === true);
     sendAnswerButton.disabled = !someAnswersChecked;
   };
-
-  const onAnswerSend = () => {
-    resetScreen();
-    // changeScreen(randomScreen());
-  };
-
-  const resetScreen = () => {
-    answers.forEach((answer) => {
-      answer.checked = false;
-    });
-
-    sendAnswerButton.disabled = true;
-  };
-
-  // playAgainButton.addEventListener(`click`, onPlayAgainClick);
 
   // Кнопка «Ответить» отключена, пока не выбран ни один из вариантов ответа.
   sendAnswerButton.disabled = true;
 
-  answers.forEach((answer) => {
+  genreAnswers.forEach((answer) => {
     answer.addEventListener(`change`, onAnswerChange);
   });
 
-  sendAnswerButton.addEventListener(`click`, onAnswerSend);
+  sendAnswerButton.addEventListener(`click`, () => {
+    const checkedAnswers = genreAnswers.filter((input) => input.checked).map((input) => input.value);
+    callback(checkedAnswers);
+  });
 
-  return gameScreenGenre;
+  return screenGenreElement;
 };
 
-export default renderScreenGenre;
+export default screenGenre;

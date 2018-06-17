@@ -1,6 +1,6 @@
 /** @module Модальное окно: подтверждение */
 
-import {render} from './util.js';
+import {render} from '../util.js';
 
 const template = `
 <section class="modal-confirm modal-confirm__wrap">

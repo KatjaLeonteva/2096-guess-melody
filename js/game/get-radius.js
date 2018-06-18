@@ -1,14 +1,8 @@
-const getRadius = (timeLeft, timeTotal) => {
-  const radius = 370;
-  const timerStep = 1000; // 1 sec
+const getRadius = (timeRatio, radius) => {
+  const stroke = (2 * Math.PI * radius).toFixed();
+  const offset = ((1 - timeRatio) * stroke).toFixed();
 
-  const circleLen = Math.ceil(2 * Math.PI * radius);
-  const offsetStep = circleLen / (timeTotal / timerStep);
-
-  return {
-    stroke: circleLen,
-    offset: ((timeTotal - timeLeft) / timeTotal) * offsetStep
-  };
+  return {stroke, offset};
 };
 
 export default getRadius;

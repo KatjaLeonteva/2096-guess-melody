@@ -1,7 +1,9 @@
 import {msToMinutesAndSeconds} from "../util";
+import {GAME_SETTINGS} from "../data/game-data";
 import render from "../render";
-import changeScreen from '../game/change-screen';
+import changeScreen from "../game/change-screen";
 import welcomeScreen from "../screens/welcome-screen";
+import getRadius from '../game/get-radius';
 
 const gameHeader = (state) => {
   const gameHeaderTemplate = `
@@ -13,6 +15,8 @@ const gameHeader = (state) => {
       <circle
         cx="390" cy="390" r="370"
         class="timer-line"
+        stroke-dasharray="${getRadius(state.timeLeft, GAME_SETTINGS.totalTime).stroke}"
+        stroke-dashoffset="${getRadius(state.timeLeft, GAME_SETTINGS.totalTime).offset}"
         style="filter: url(../#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
 
       <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">

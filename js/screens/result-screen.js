@@ -1,6 +1,6 @@
-import render from "../render";
-import buttonReplay from "../components/button-replay";
-import {showResult} from "../game/show-result";
+import render from '../render';
+import buttonReplay from '../components/button-replay';
+import {showResult} from '../game/show-result';
 
 const resultScreen = (gameState) => {
   const result = showResult(gameState);

@@ -1,6 +1,6 @@
-import {msToMinutesAndSeconds, pluralize} from "../util";
-import {GAME_SETTINGS, statistics} from "../data/game-data";
-import {calculatePoints} from "./calculate-points";
+import {msToMinutesAndSeconds, pluralize} from '../util';
+import {GAME_SETTINGS, statistics} from '../data/game-data';
+import {calculatePoints} from './calculate-points';
 
 const getResult = (state) => {
   if (state.timeLeft === 0) {

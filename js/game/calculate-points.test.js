@@ -1,5 +1,5 @@
-import {assert} from "chai";
-import {calculatePoints} from "./calculate-points";
+import {assert} from 'chai';
+import {calculatePoints} from './calculate-points';
 
 describe(`Check points calculator`, () => {
   it(`should return -1 if answered less than 10 answers`, () => {

@@ -1,6 +1,6 @@
 /** @module Модальное окно: ошибка */
 
-import render from "../render";
+import render from '../render';
 
 const template = `
 <section class="modal-error modal-error__wrap">

@@ -1,6 +1,6 @@
 import changeScreen from '../game/change-screen';
-import {GAME_SETTINGS} from "../data/game-data";
-import gameScreen from "../screens/game-screen";
+import {GAME_SETTINGS} from '../data/game-data';
+import gameScreen from '../screens/game-screen';
 
 const INITIAL_STATE = Object.freeze({
   level: 0,

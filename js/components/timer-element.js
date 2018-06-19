@@ -5,7 +5,7 @@ import {msToMinutesAndSeconds} from '../util';
 const RADIUS = 370;
 
 const timer = (timeLeft) => {
-  const timeRatio = timeLeft / GAME_SETTINGS.totalTime;
+  const timerRadius = getRadius(timeLeft / GAME_SETTINGS.totalTime, RADIUS);
   const timeLeftInMinSec = msToMinutesAndSeconds(timeLeft);
 
   return `
@@ -13,8 +13,8 @@ const timer = (timeLeft) => {
       <circle
         cx="390" cy="390" r="370"
         class="timer-line"
-        stroke-dasharray="${getRadius(timeRatio, RADIUS).stroke}"
-        stroke-dashoffset="${getRadius(timeRatio, RADIUS).offset}"
+        stroke-dasharray="${timerRadius.stroke}"
+        stroke-dashoffset="${timerRadius.offset}"
         style="filter: url(../#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
 
       <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">

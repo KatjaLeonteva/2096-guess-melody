@@ -1,7 +1,7 @@
 /** @module Игра на выбор жанра */
 
-import {render} from '../util';
-import player from "./player";
+import render from '../render';
+import player from '../components/player';
 
 const screenGenre = (question, callback) => {
   const template = `

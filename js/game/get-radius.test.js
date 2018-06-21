@@ -1,5 +1,5 @@
-import assert from 'assert';
-import getRadius from './get-radius';
+import assert from "assert";
+import getRadius from "./get-radius";
 
 describe(`Function should correctly calculate circle length`, () => {
   describe(`Normal cases`, () => {

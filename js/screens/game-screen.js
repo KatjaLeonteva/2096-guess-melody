@@ -1,10 +1,10 @@
-import changeScreen from '../game/change-screen';
-import {GAME_SETTINGS, gameQuestions} from '../data/game-data';
-import screenArtist from './game-screen-artist';
-import screenGenre from './game-screen-genre';
-import gameHeader from '../components/header';
-import checkAnswers from '../game/check-answers';
-import resultScreen from './result-screen';
+import changeScreen from "../game/change-screen";
+import {GAME_SETTINGS, gameQuestions} from "../data/game-data";
+import screenArtist from "./game-screen-artist";
+import screenGenre from "./game-screen-genre";
+import gameHeader from "../components/header";
+import checkAnswers from "../game/check-answers";
+import resultScreen from "./result-screen";
 
 const gameScreen = (gameState) => {
   const question = gameQuestions[gameState.level];

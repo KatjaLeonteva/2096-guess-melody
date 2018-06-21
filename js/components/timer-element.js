@@ -1,6 +1,6 @@
-import {GAME_SETTINGS} from '../data/game-data';
-import getRadius from '../game/get-radius';
-import {msToMinutesAndSeconds} from '../util';
+import {GAME_SETTINGS} from "../data/game-data";
+import getRadius from "../game/get-radius";
+import {msToMinutesAndSeconds} from "../util";
 
 const RADIUS = 370;
 

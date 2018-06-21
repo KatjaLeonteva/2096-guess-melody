@@ -1,7 +1,7 @@
-import render from '../render';
-import timer from './timer-element';
-import changeScreen from '../game/change-screen';
-import welcomeScreen from '../screens/welcome-screen';
+import render from "../render";
+import timer from "./timer-element";
+import changeScreen from "../game/change-screen";
+import welcomeScreen from "../screens/welcome-screen";
 
 const gameHeader = (state) => {
   const gameHeaderTemplate = `
@@ -27,7 +27,7 @@ const gameHeader = (state) => {
   const playAgainButton = gameHeaderElement.querySelector(`.play-again`);
   playAgainButton.addEventListener(`click`, () => {
     // TODO Добавить модальное окно
-    changeScreen(welcomeScreen);
+    changeScreen(welcomeScreen());
   });
 
   return gameHeaderElement;

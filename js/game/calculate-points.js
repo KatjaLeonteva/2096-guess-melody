@@ -1,4 +1,4 @@
-import {GAME_SETTINGS} from '../data/game-data';
+import {GAME_SETTINGS} from "../data/game-data";
 
 export const calculatePoints = (gameState) => {
   if ((gameState.answers.length < GAME_SETTINGS.totalQuestions) || (gameState.mistakes > GAME_SETTINGS.maxMistakes)) {

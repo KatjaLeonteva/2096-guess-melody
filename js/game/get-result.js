@@ -2,7 +2,7 @@ import {msToMinutesAndSeconds, pluralize} from "../util";
 import {GAME_SETTINGS, statistics} from "../data/game-data";
 import {calculatePoints} from "./calculate-points";
 
-const getResult = (state) => {
+const getOutput = (state) => {
   if (state.timeLeft === 0) {
     return `timeup`;
   }
@@ -36,7 +36,7 @@ const resultTemplate = (game) => {
   };
 };
 
-export const showResult = (gameState) => {
+const getResult = (gameState) => {
   const userPoints = calculatePoints(gameState);
   const updatedStatistics = statistics.concat(userPoints).sort((a, b) => b - a);
 
@@ -52,5 +52,7 @@ export const showResult = (gameState) => {
     }
   };
 
-  return resultTemplate(gameResult)[getResult(gameState)];
+  return resultTemplate(gameResult)[getOutput(gameState)];
 };
+
+export default getResult;

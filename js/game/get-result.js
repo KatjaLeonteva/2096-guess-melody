@@ -1,58 +1,49 @@
 import {msToMinutesAndSeconds, pluralize} from "../util";
 import {GAME_SETTINGS, statistics} from "../data/game-data";
-import {calculatePoints} from "./calculate-points";
+import getOutput from "./get-output";
+import calculatePoints from "./calculate-points";
 
-const getOutput = (state) => {
-  if (state.timeLeft === 0) {
-    return `timeup`;
+const getResult = (state, output) => {
+  const points = calculatePoints(state);
+  const updatedStatistics = statistics.concat(points).sort((a, b) => b - a);
+
+  let result;
+
+  switch (output) {
+    case `timeup`:
+      result = {
+        title: `Увы и ах!`,
+        description: `Время вышло!<br>Вы не успели отгадать все мелодии`
+      };
+      break;
+    case `lose`:
+      result = {
+        title: `Какая жалость!`,
+        description: `У вас закончились все попытки.<br>Ничего, повезёт в следующий раз!`
+      };
+      break;
+    case `win`: {
+      const time = msToMinutesAndSeconds(GAME_SETTINGS.totalTime - state.timeLeft);
+      const fastAnswers = state.answers.filter((answer) => answer.correct && answer.time < GAME_SETTINGS.fastAnswerTime).length;
+      const place = updatedStatistics.indexOf(points) + 1;
+      const players = updatedStatistics.length;
+      const rate = Math.round(((players - place) / players) * 100);
+
+      result = {
+        title: `Вы настоящий меломан!`,
+        description: `За&nbsp;${time.minutes}&nbsp;${pluralize(time.minutes, `minutes`)} и ${time.seconds}&nbsp;${pluralize(time.seconds, `seconds`)}
+        <br>вы&nbsp;набрали ${points} ${pluralize(points, `points`)} (${fastAnswers} ${pluralize(fastAnswers, `fast`)})
+        <br>совершив ${state.mistakes}&nbsp;${pluralize(state.mistakes, `mistakes`)}`,
+        comparison: `Вы заняли ${place} место из ${players}. Это&nbsp;лучше, чем у&nbsp;${rate}%&nbsp;игроков`
+      };
+      break;
+    }
+    default: {
+      throw new Error(`Unknown result: ${result}`);
+    }
   }
 
-  if (state.mistakes > GAME_SETTINGS.maxMistakes) {
-    return `lose`;
-  }
-
-  return `win`;
-};
-
-const resultTemplate = (game) => {
-  return {
-    timeup: {
-      title: `Увы и ах!`,
-      description: `Время вышло!<br>Вы не успели отгадать все мелодии`,
-      comparison: `` // TODO убрать после исправления resultScreenTemplate
-    },
-    lose: {
-      title: `Какая жалость!`,
-      description: `У вас закончились все попытки.<br>Ничего, повезёт в следующий раз!`,
-      comparison: `` // TODO убрать после исправления resultScreenTemplate
-    },
-    win: {
-      title: `Вы настоящий меломан!`,
-      description: `За&nbsp;${game.time.minutes}&nbsp;${pluralize(game.time.minutes, `minutes`)} и ${game.time.seconds}&nbsp;${pluralize(game.time.seconds, `seconds`)}
-      <br>вы&nbsp;набрали ${game.points} ${pluralize(game.points, `points`)} (${game.fastAnswers} ${pluralize(game.fastAnswers, `fast`)})
-      <br>совершив ${game.mistakes}&nbsp;${pluralize(game.mistakes, `mistakes`)}`,
-      comparison: `Вы заняли ${game.place} место из ${game.players}. Это&nbsp;лучше, чем у&nbsp;${game.rate}%&nbsp;игроков`
-    }
-  };
-};
-
-const getResult = (gameState) => {
-  const userPoints = calculatePoints(gameState);
-  const updatedStatistics = statistics.concat(userPoints).sort((a, b) => b - a);
-
-  let gameResult = {
-    time: msToMinutesAndSeconds(GAME_SETTINGS.totalTime - gameState.timeLeft),
-    points: userPoints,
-    fastAnswers: gameState.answers.filter((answer) => answer.correct && answer.time < GAME_SETTINGS.fastAnswerTime).length,
-    mistakes: gameState.mistakes,
-    players: updatedStatistics.length,
-    place: updatedStatistics.indexOf(userPoints) + 1,
-    get rate() {
-      return Math.round(((this.players - this.place) / this.players) * 100);
-    }
-  };
-
-  return resultTemplate(gameResult)[getOutput(gameState)];
+  return result;
 };
 
 export default getResult;

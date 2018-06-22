@@ -1,6 +1,6 @@
 import {GAME_SETTINGS} from "../data/game-data";
 
-export const calculatePoints = (gameState) => {
+const calculatePoints = (gameState) => {
   if ((gameState.answers.length < GAME_SETTINGS.totalQuestions) || (gameState.mistakes > GAME_SETTINGS.maxMistakes)) {
     return GAME_SETTINGS.losePoints;
   }
@@ -14,3 +14,5 @@ export const calculatePoints = (gameState) => {
     return points;
   }, 0);
 };
+
+export default calculatePoints;

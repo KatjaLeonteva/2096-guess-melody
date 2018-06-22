@@ -1,26 +1,19 @@
-import render from "../render";
-import buttonReplay from "../components/button-replay";
+import getOutput from "../game/get-output";
 import getResult from "../game/get-result";
+import startGame from "../game/start-game";
 import ResultView from "../views/result-view";
+import ReplayView from "../views/replay-view";
 
 const resultScreen = (gameState) => {
-  // const result = showResult(gameState);
-  // const resultScreenTemplate = `
-  // <section class="main main--result">
-  //   <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
-  //
-  //   <h2 class="title">${result.title}</h2>
-  //   <div class="main-stat">${result.description}</div>
-  //   <span class="main-comparison">${result.comparison}</span> <!-- TODO Как показывать только для win? -->
-  // </section>
-  // `;
-  //
-  // const resultScreenElement = render(resultScreenTemplate);
-  // resultScreenElement.appendChild(buttonReplay);
-  //
-  // return resultScreenElement;
-  const result = getResult(gameState);
-  const screen = new ResultView(result);
+  const gameOutput = getOutput(gameState);
+  const screen = new ResultView(getResult(gameState, gameOutput), gameOutput);
+  const replay = new ReplayView((gameOutput === `win` ? `Сыграть` : `Попробовать`) + ` ещё раз`);
+
+  // ТЗ 4.2. При нажатии на кнопку Попробовать ещё раз
+  // пользователь попадает на первый вопрос
+  // с тем же набором вопросов, что и в прошлый раз.
+  replay.onReplayButtonClick = () => startGame();
+  screen.element.appendChild(replay.element);
 
   return screen.element;
 };

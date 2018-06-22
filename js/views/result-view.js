@@ -1,9 +1,10 @@
 import AbstractView from "./abstract-view";
 
 export default class ResultView extends AbstractView {
-  constructor(result) {
+  constructor(result, output) {
     super();
     this.result = result;
+    this.output = output;
   }
 
   get template() {
@@ -12,7 +13,7 @@ export default class ResultView extends AbstractView {
   
     <h2 class="title">${this.result.title}</h2>
     <div class="main-stat">${this.result.description}</div>
-    <span class="main-comparison">${this.result.comparison}</span> <!-- TODO Как показывать только для win? -->
+    ${(this.output === `win`) ? `<span class="main-comparison">${this.result.comparison}</span>` : ``}
   </section>`;
   }
 

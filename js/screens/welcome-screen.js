@@ -6,9 +6,7 @@ import startGame from "../game/start-game";
 
 const welcomeScreen = () => {
   const screen = new WelcomeView(GAME_SETTINGS);
-  screen.onPlayButtonClick = () => {
-    startGame();
-  };
+  screen.onPlayButtonClick = () => startGame();
 
   return screen.element;
 };

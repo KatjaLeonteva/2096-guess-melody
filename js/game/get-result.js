@@ -39,7 +39,7 @@ const getResult = (state, output) => {
       break;
     }
     default: {
-      throw new Error(`Unknown result: ${result}`);
+      throw new Error(`Unknown result: ${output}`);
     }
   }
 

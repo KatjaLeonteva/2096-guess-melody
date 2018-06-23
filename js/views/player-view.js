@@ -18,9 +18,5 @@ export default class PlayerView extends AbstractView {
   </div>`;
   }
 
-  onButtonClick() {}
-
-  bind() {
-    this.element.addEventListener(`click`, () => this.onButtonClick());
-  }
+  bind() {}
 }

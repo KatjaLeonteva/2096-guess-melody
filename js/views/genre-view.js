@@ -26,7 +26,12 @@ export default class GenreView extends AbstractView {
 
   onAnswerSend() {}
 
+  onPauseTrack() {}
+
+  onPlayTrack() {}
+
   bind() {
+    // Обработчик для формы
     const genreForm = this.element.querySelector(`form.genre`);
     const genreAnswers = Array.from(genreForm.querySelectorAll(`input[name="answer"]`));
     const sendAnswerButton = genreForm.querySelector(`.genre-answer-send`);
@@ -36,8 +41,7 @@ export default class GenreView extends AbstractView {
       sendAnswerButton.disabled = !someAnswersChecked;
     };
 
-    // Кнопка «Ответить» отключена, пока не выбран ни один из вариантов ответа.
-    sendAnswerButton.disabled = true;
+    sendAnswerButton.disabled = true; // Кнопка «Ответить» отключена, пока не выбран ни один из вариантов ответа.
 
     genreAnswers.forEach((answer) => {
       answer.addEventListener(`change`, onAnswerChange);
@@ -46,6 +50,22 @@ export default class GenreView extends AbstractView {
     sendAnswerButton.addEventListener(`click`, () => {
       const checkedAnswers = genreAnswers.filter((input) => input.checked).map((input) => input.value);
       this.onAnswerSend(checkedAnswers);
+    });
+
+    // Обработчик для плеера
+    const allPlayers = Array.from(this.element.querySelectorAll(`.player`));
+
+    allPlayers.forEach((player) => {
+      player.addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        evt.stopPropagation();
+        const audio = player.querySelector(`audio`);
+        if (audio.duration > 0 && !audio.paused) {
+          this.onPauseTrack(player);
+        } else {
+          this.onPlayTrack(player, allPlayers);
+        }
+      });
     });
   }
 }

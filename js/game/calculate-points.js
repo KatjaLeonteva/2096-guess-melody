@@ -1,6 +1,7 @@
 import {GAME_SETTINGS} from "../data/game-data";
 
 const calculatePoints = (gameState) => {
+  // TODO Здесь можно просто проверять output === `timeup` или `lose`
   if ((gameState.answers.length < GAME_SETTINGS.totalQuestions) || (gameState.mistakes > GAME_SETTINGS.maxMistakes)) {
     return GAME_SETTINGS.losePoints;
   }

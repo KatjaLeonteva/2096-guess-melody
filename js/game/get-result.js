@@ -1,6 +1,5 @@
 import {msToMinutesAndSeconds, pluralize} from "../util";
 import {GAME_SETTINGS, statistics} from "../data/game-data";
-import getOutput from "./get-output";
 import calculatePoints from "./calculate-points";
 
 const getResult = (state, output) => {

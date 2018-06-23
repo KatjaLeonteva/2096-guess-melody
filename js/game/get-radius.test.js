@@ -1,4 +1,4 @@
-import assert from "assert";
+import {assert} from "chai";
 import getRadius from "./get-radius";
 
 describe(`Function should correctly calculate circle length`, () => {

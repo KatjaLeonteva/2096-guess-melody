@@ -10,8 +10,8 @@ export const createTimer = (seconds) => {
   return {
     timeLeft: seconds,
     tick() {
-      if (this.secondsLeft > 0) {
-        this.secondsLeft--;
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
         return true;
       }
       return false;

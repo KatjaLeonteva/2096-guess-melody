@@ -3,7 +3,7 @@ import {GAME_SETTINGS, statistics} from "../data/game-data";
 import calculatePoints from "./calculate-points";
 
 const getResult = (state, output) => {
-  const points = calculatePoints(state);
+  const points = calculatePoints(state, output);
   const updatedStatistics = statistics.concat(points).sort((a, b) => b - a);
 
   let result;

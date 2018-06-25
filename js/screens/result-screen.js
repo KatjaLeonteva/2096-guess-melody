@@ -1,21 +1,29 @@
-import getOutput from "../game/get-output";
-import getResult from "../game/get-result";
-import startGame from "../game/start-game";
+import Application from '../app';
 import ResultView from "../views/result-view";
 import ReplayView from "../views/replay-view";
+import getResult from "../game/get-result";
 
-const resultScreen = (gameState) => {
-  const gameOutput = getOutput(gameState);
-  const screen = new ResultView(getResult(gameState, gameOutput), gameOutput);
-  const replay = new ReplayView((gameOutput === `win` ? `Сыграть` : `Попробовать`) + ` ещё раз`);
+export default class ResultScreen {
+  constructor(state, output) {
+    this.state = state;
+    this.output = output;
+    this.screen = new ResultView(getResult(this.state, this.output), this.output);
+    this.replay = new ReplayView((this.output === `win` ? `Сыграть` : `Попробовать`) + ` ещё раз`);
 
-  // ТЗ 4.2. При нажатии на кнопку Попробовать ещё раз
-  // пользователь попадает на первый вопрос
-  // с тем же набором вопросов, что и в прошлый раз.
-  replay.onReplayButtonClick = () => startGame();
-  screen.element.appendChild(replay.element);
+    this.render();
+    this.bind();
+  }
 
-  return screen.element;
-};
+  get element() {
+    return this.screen.element;
+  }
 
-export default resultScreen;
+  render() {
+    this.screen.element.appendChild(this.replay.element);
+  }
+
+  bind() {
+    this.replay.onReplayButtonClick = () => Application.showGame();
+  }
+
+}

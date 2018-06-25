@@ -1,4 +1,3 @@
-import changeScreen from "./game/change-screen";
-import welcomeScreen from "./screens/welcome-screen";
+import Application from './app';
 
-changeScreen(welcomeScreen());
+Application.showWelcome();

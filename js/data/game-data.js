@@ -9,6 +9,13 @@ export const GAME_SETTINGS = {
   wrongPoints: -2
 };
 
+export const INITIAL_STATE = Object.freeze({
+  level: 0,
+  timeLeft: GAME_SETTINGS.totalTime,
+  mistakes: 0,
+  answers: []
+});
+
 // Music from https://www.youtube.com/audiolibrary/music?feature=blog
 const data = [
   {

@@ -1,14 +1,21 @@
 /** @module Приветствие */
 
+import Application from '../app';
 import WelcomeView from "../views/welcome-view";
 import {GAME_SETTINGS} from "../data/game-data";
-import startGame from "../game/start-game";
 
-const welcomeScreen = () => {
-  const screen = new WelcomeView(GAME_SETTINGS);
-  screen.onPlayButtonClick = () => startGame();
+export default class WelcomeScreen {
+  constructor() {
+    this.screen = new WelcomeView(GAME_SETTINGS);
+    this.bind();
+  }
 
-  return screen.element;
-};
+  get element() {
+    return this.screen.element;
+  }
 
-export default welcomeScreen;
+  bind() {
+    this.screen.onPlayButtonClick = () => Application.showGame();
+  }
+
+}

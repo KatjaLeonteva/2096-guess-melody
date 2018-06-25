@@ -39,7 +39,8 @@ export default class ArtistView extends AbstractView {
     const artistAnswers = Array.from(artistForm.querySelectorAll(`input[name="answer"]`));
 
     artistAnswers.forEach((answer) => {
-      answer.addEventListener(`change`, () => {
+      answer.addEventListener(`change`, (evt) => {
+        evt.preventDefault();
         const checkedAnswers = artistAnswers.filter((input) => input.checked).map((input) => input.value);
         this.onAnswerSend(checkedAnswers);
       });
@@ -60,4 +61,5 @@ export default class ArtistView extends AbstractView {
       });
     });
   }
+
 }

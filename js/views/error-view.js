@@ -15,5 +15,4 @@ export default class ErrorView extends AbstractView {
     </section>`;
   }
 
-  bind() {}
 }

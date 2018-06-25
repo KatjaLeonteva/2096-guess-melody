@@ -17,7 +17,4 @@ export default class ResultView extends AbstractView {
   </section>`;
   }
 
-  bind() {
-    //
-  }
 }

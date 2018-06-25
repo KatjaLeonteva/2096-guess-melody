@@ -18,5 +18,4 @@ export default class PlayerView extends AbstractView {
   </div>`;
   }
 
-  bind() {}
 }

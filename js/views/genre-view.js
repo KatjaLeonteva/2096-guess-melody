@@ -47,7 +47,8 @@ export default class GenreView extends AbstractView {
       answer.addEventListener(`change`, onAnswerChange);
     });
 
-    sendAnswerButton.addEventListener(`click`, () => {
+    sendAnswerButton.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
       const checkedAnswers = genreAnswers.filter((input) => input.checked).map((input) => input.value);
       this.onAnswerSend(checkedAnswers);
     });

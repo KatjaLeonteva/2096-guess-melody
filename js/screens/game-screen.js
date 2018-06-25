@@ -11,15 +11,15 @@ import ArtistView from "../views/artist-view";
 import GenreView from "../views/genre-view";
 import ConfirmView from "../views/confirm-view";
 
+const GameView = {
+  guessArtist: ArtistView,
+  chooseGenre: GenreView
+};
+
 const gameScreen = (gameState) => {
   const question = gameQuestions[gameState.level];
 
-  const questionScreenMap = {
-    guessArtist: ArtistView,
-    chooseGenre: GenreView
-  };
-
-  const screen = new questionScreenMap[question.type](question);
+  const screen = new GameView[question.type](question);
   const wrapper = screen.element.querySelector(`.main-wrap`);
   const logo = new LogoView();
   const timer = new TimerView(gameState.timeLeft, GAME_SETTINGS.totalTime);

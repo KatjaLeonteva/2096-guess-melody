@@ -14,6 +14,8 @@ const questionScreenMap = {
   chooseGenre: GenreView
 };
 
+const ONE_SECOND = 1000;
+
 export default class GameScreen {
   constructor(model) {
     this.model = model;
@@ -21,9 +23,13 @@ export default class GameScreen {
     this.logo = new LogoView();
     this.timer = new TimerView(this.model.timeLeft, GAME_SETTINGS.totalTime);
     this.mistakes = new MistakesView(this.model.mistakes);
+    this.modal = new ConfirmView(`Вы уверены что хотите начать игру заново?`);
+
+    this._interval = null;
 
     this.render();
     this.bind();
+    this.startTimer();
   }
 
   get element() {
@@ -44,8 +50,9 @@ export default class GameScreen {
     this.screen.onPlayTrack = (player, otherPlayers) => this.playTrack(player, otherPlayers);
 
     this.screen.onAnswerSend = (userAnswers) => {
-      // TODO Считать время ответа
-      this.model.saveAnswer(10000, userAnswers);
+      this.stopTracks();
+      this.stopTimer();
+      this.model.saveAnswer(userAnswers);
 
       if (this.model.status === `continue`) {
         this.model.levelUp();
@@ -54,15 +61,38 @@ export default class GameScreen {
         Application.showResult(this.model.state, this.model.status);
       }
     };
+
+    this.modal.onConfirm = () => Application.showWelcome();
+    this.modal.onCancel = () => {
+      this.startTimer();
+      this.screen.element.removeChild(this.modal.element);
+    };
   }
 
-  confirmRestart() {
-    const modal = new ConfirmView(`Вы уверены что хотите начать игру заново?`);
-    modal.onConfirm = () => Application.showWelcome();
-    modal.onCancel = () => this.screen.element.removeChild(modal.element);
+  stopTimer() {
+    clearInterval(this._interval);
+  }
 
-    // TODO Добавить остановку таймера и музыки
-    this.screen.element.appendChild(modal.element);
+  startTimer() {
+    this._interval = setInterval(() => {
+      const tick = this.model.tick(ONE_SECOND);
+      if (tick) {
+        this.updateTimer();
+      } else {
+        this.stopTimer();
+        Application.showResult(this.model.state, this.model.status);
+      }
+    }, ONE_SECOND);
+  }
+
+  updateTimer() {
+    const newTimer = new TimerView(this.model.timeLeft, GAME_SETTINGS.totalTime);
+    this.screen.element.replaceChild(newTimer.element, this.timer.element);
+    this.timer = newTimer;
+  }
+
+  pauseTracks(players) {
+    players.forEach((player) => this.pauseTrack(player));
   }
 
   pauseTrack(player) {
@@ -71,9 +101,24 @@ export default class GameScreen {
   }
 
   playTrack(player, otherPlayers) {
-    otherPlayers.forEach((plr) => this.pauseTrack(plr));
+    this.pauseTracks(otherPlayers);
     player.querySelector(`audio`).play();
     player.querySelector(`.player-control`).classList.replace(`player-control--play`, `player-control--pause`);
+  }
+
+  stopTracks() {
+    const players = Array.from(this.screen.element.querySelectorAll(`.player`));
+    players.forEach((player) => {
+      const audio = player.querySelector(`audio`);
+      audio.pause();
+      audio.currentTime = 0;
+    });
+  }
+
+  confirmRestart() {
+    this.stopTimer();
+    this.pauseTracks(Array.from(this.screen.element.querySelectorAll(`.player`)));
+    this.screen.element.appendChild(this.modal.element);
   }
 
 }

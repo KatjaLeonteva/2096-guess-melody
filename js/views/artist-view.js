@@ -11,7 +11,7 @@ export default class ArtistView extends AbstractView {
     return `<section class="main main--level main--level-artist">
     <div class="main-wrap">
       <h2 class="title main-title">${this.question.title}</h2>
-      ${new PlayerView(this.question.trackSrc).template}
+      ${new PlayerView(this.question.trackSrc, true).template}
       <form class="main-list">
         ${[...Object.entries(this.question.answers)].map(([answerValue, answerData], index) => `
         <div class="main-answer-wrapper">

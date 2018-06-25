@@ -48,16 +48,30 @@ class GameModel {
     this.state.level++;
   }
 
-  saveAnswer(time, answer) {
+  saveAnswer(answer) {
     const correct = checkAnswers(this.currentQuestion, answer);
 
     if (!correct) {
       this.state.mistakes++;
     }
 
-    this.state.timeLeft = Math.max((this.state.timeLeft - time), 0);
-
+    const time = GAME_SETTINGS.totalTime - this.timeLeft - this.calculateAnswersTime();
     this.state.answers.push({time, correct});
+  }
+
+  tick(interval) {
+    if (this.timeLeft > 0) {
+      this.state.timeLeft -= interval;
+      return true;
+    }
+    return false;
+  }
+
+  calculateAnswersTime() {
+    return this.state.answers.reduce((sum, answer) => {
+      sum += answer.time;
+      return sum;
+    }, 0);
   }
 
 }

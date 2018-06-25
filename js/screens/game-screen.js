@@ -9,7 +9,7 @@ import ArtistView from "../views/artist-view";
 import GenreView from "../views/genre-view";
 import ConfirmView from "../views/confirm-view";
 
-const questionScreenMap = {
+const GameView = {
   guessArtist: ArtistView,
   chooseGenre: GenreView
 };
@@ -19,7 +19,7 @@ const ONE_SECOND = 1000;
 export default class GameScreen {
   constructor(model) {
     this.model = model;
-    this.screen = new questionScreenMap[this.model.currentQuestion.type](this.model.currentQuestion);
+    this.screen = new GameView[this.model.currentQuestion.type](this.model.currentQuestion);
     this.logo = new LogoView();
     this.timer = new TimerView(this.model.timeLeft, GAME_SETTINGS.totalTime);
     this.mistakes = new MistakesView(this.model.mistakes);

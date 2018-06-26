@@ -2,8 +2,9 @@ import {GAME_SETTINGS, INITIAL_STATE, gameQuestions} from "./game-data";
 import checkAnswers from "../game/check-answers";
 
 class GameModel {
-  constructor() {
+  constructor(data) {
     this._questions = gameQuestions;
+    // this._questions = data;
     this.restart();
   }
 

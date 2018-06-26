@@ -11,8 +11,8 @@ export default class Application {
     changeScreen(welcomeScreen.element);
   }
 
-  static showGame() {
-    const model = new GameModel();
+  static showGame(data) {
+    const model = new GameModel(data);
     const gameScreen = new GameScreen(model);
     changeScreen(gameScreen.element);
   }

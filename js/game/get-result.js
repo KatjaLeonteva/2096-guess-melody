@@ -1,5 +1,5 @@
 import {msToMinutesAndSeconds, pluralize} from "../util";
-import {GAME_SETTINGS, statistics} from "../data/game-data";
+import {GAME_SETTINGS, statistics, GameStatus} from "../data/game-data";
 import calculatePoints from "./calculate-points";
 
 const getResult = (state, output) => {
@@ -9,19 +9,19 @@ const getResult = (state, output) => {
   let result;
 
   switch (output) {
-    case `timeup`:
+    case GameStatus.TIMEUP:
       result = {
         title: `Увы и ах!`,
         description: `Время вышло!<br>Вы не успели отгадать все мелодии`
       };
       break;
-    case `lose`:
+    case GameStatus.LOSE:
       result = {
         title: `Какая жалость!`,
         description: `У вас закончились все попытки.<br>Ничего, повезёт в следующий раз!`
       };
       break;
-    case `win`: {
+    case GameStatus.WIN: {
       const time = msToMinutesAndSeconds(GAME_SETTINGS.totalTime - state.timeLeft);
       const fastAnswers = state.answers.filter((answer) => answer.correct && answer.time < GAME_SETTINGS.fastAnswerTime).length;
       const place = updatedStatistics.indexOf(points) + 1;

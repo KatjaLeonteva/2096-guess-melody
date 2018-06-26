@@ -1,6 +1,6 @@
 /** @module Приветствие */
 
-import Application from '../app';
+import Application from "../app";
 import WelcomeView from "../views/welcome-view";
 import {GAME_SETTINGS} from "../data/game-data";
 

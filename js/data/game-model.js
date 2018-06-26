@@ -1,4 +1,4 @@
-import {GAME_SETTINGS, INITIAL_STATE, gameQuestions} from "./game-data";
+import {GAME_SETTINGS, INITIAL_STATE} from "./game-data";
 import checkAnswers from "../game/check-answers";
 
 class GameModel {

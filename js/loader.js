@@ -11,14 +11,14 @@ const checkStatus = (response) => {
   }
 };
 
-const loadAudio = (url) => {
-  return new Promise((onLoad, onError) => {
-    const audio = new Audio();
-    audio.onload = () => onLoad(audio);
-    audio.onerror = () => onError(`Не удалось загрузить аудиофайл: ${url}`);
-    audio.src = url;
-  });
-};
+// const loadAudio = (url) => {
+//   return new Promise((onLoad, onError) => {
+//     const audio = new Audio();
+//     audio.onload = () => onLoad(audio);
+//     audio.onerror = () => onError(`Не удалось загрузить аудиофайл: ${url}`);
+//     audio.src = url;
+//   });
+// };
 
 export default class Loader {
 
@@ -28,23 +28,23 @@ export default class Loader {
       .then((response) => response.json())
       .then((data) => adaptServerData(data))
       .catch(Application.showError);
-      // .then((questions) => questions.map((question) => {
-      //   if (question.src) {
-      //     loadAudio(question.src);
-      //   } else {
-      //     const answers = question.answers;
-      //     for (const i in answers) {
-      //       if (answers.hasOwnProperty(i)) {
-      //         loadAudio(answers[i].track.src);
-      //       }
-      //     }
-      //   }
-      // }))
-      // .then((audioPromises) => {
-      //   Promise.all(audioPromises)
-      //     .then(() => console.log(`все загрузилось`))
-      //     .catch(() => console.log(`не все зашгрузилось`));
-      // });
+    // .then((questions) => questions.map((question) => {
+    //   if (question.src) {
+    //     loadAudio(question.src);
+    //   } else {
+    //     const answers = question.answers;
+    //     for (const i in answers) {
+    //       if (answers.hasOwnProperty(i)) {
+    //         loadAudio(answers[i].track.src);
+    //       }
+    //     }
+    //   }
+    // }))
+    // .then((audioPromises) => {
+    //   Promise.all(audioPromises)
+    //     .then(() => console.log(`все загрузилось`))
+    //     .catch(() => console.log(`не все зашгрузилось`));
+    // });
 
   }
 }

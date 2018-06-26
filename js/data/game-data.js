@@ -65,7 +65,7 @@ const data = [
 export const gameQuestions = [
   {
     type: `guessArtist`,
-    trackSrc: data[0].src,
+    src: data[0].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[0], correct: true},
@@ -75,7 +75,7 @@ export const gameQuestions = [
   },
   {
     type: `guessArtist`,
-    trackSrc: data[1].src,
+    src: data[1].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[1], correct: true},
@@ -85,7 +85,7 @@ export const gameQuestions = [
   },
   {
     type: `guessArtist`,
-    trackSrc: data[2].src,
+    src: data[2].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[2], correct: true},
@@ -95,7 +95,7 @@ export const gameQuestions = [
   },
   {
     type: `guessArtist`,
-    trackSrc: data[3].src,
+    src: data[3].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[3], correct: true},
@@ -105,7 +105,7 @@ export const gameQuestions = [
   },
   {
     type: `guessArtist`,
-    trackSrc: data[4].src,
+    src: data[4].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[4], correct: true},
@@ -115,7 +115,7 @@ export const gameQuestions = [
   },
   {
     type: `guessArtist`,
-    trackSrc: data[5].src,
+    src: data[5].src,
     title: `Кто исполняет эту песню?`,
     answers: {
       'val-1': {track: data[5], correct: true},

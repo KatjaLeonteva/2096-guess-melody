@@ -1,3 +1,5 @@
+import adaptServerData from "./data/data-adapter";
+
 const SERVER_URL = `https://es.dump.academy/guess-melody`;
 
 const checkStatus = (response) => {
@@ -15,6 +17,8 @@ export default class Loader {
   static loadData() {
     return fetch(`${SERVER_URL}/questions`)
       .then(checkStatus)
-      .then(toJSON);
+      .then(toJSON)
+      .then(adaptServerData);
+    // TODO загрузить все картинки и аудио
   }
 }

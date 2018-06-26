@@ -17,8 +17,8 @@ export default class Application {
     changeScreen(gameScreen.element);
   }
 
-  static showResult(gameState, gameOutput) {
-    const resultScreen = new ResultScreen(gameState, gameOutput);
+  static showResult(model) {
+    const resultScreen = new ResultScreen(model);
     changeScreen(resultScreen.element);
   }
 

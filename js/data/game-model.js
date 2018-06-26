@@ -3,8 +3,7 @@ import checkAnswers from "../game/check-answers";
 
 class GameModel {
   constructor(data) {
-    this._questions = gameQuestions;
-    // this._questions = data;
+    this.data = data;
     this.restart();
   }
 
@@ -21,7 +20,7 @@ class GameModel {
   }
 
   get currentQuestion() {
-    return this._questions[this.level];
+    return this.data[this.level];
   }
 
   get status() {

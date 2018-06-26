@@ -4,11 +4,10 @@ import ReplayView from "../views/replay-view";
 import getResult from "../game/get-result";
 
 export default class ResultScreen {
-  constructor(state, output) {
-    this.state = state;
-    this.output = output;
-    this.screen = new ResultView(getResult(this.state, this.output), this.output);
-    this.replay = new ReplayView((this.output === `win` ? `Сыграть` : `Попробовать`) + ` ещё раз`);
+  constructor(model) {
+    this.model = model;
+    this.screen = new ResultView(getResult(this.model.state, this.model.status), this.model.status);
+    this.replay = new ReplayView((this.model.status === `win` ? `Сыграть` : `Попробовать`) + ` ещё раз`);
 
     this.render();
     this.bind();
@@ -23,7 +22,7 @@ export default class ResultScreen {
   }
 
   bind() {
-    this.replay.onReplayButtonClick = () => Application.showGame();
+    this.replay.onReplayButtonClick = () => Application.showGame(this.model.data);
   }
 
 }

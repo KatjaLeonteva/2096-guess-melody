@@ -3,7 +3,6 @@
 import Application from "../app";
 import Loader from "../loader";
 import WelcomeView from "../views/welcome-view";
-import ErrorView from "../views/error-view";
 import {GAME_SETTINGS} from "../data/game-data";
 
 export default class WelcomeScreen {

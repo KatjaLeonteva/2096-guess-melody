@@ -11,8 +11,12 @@ export default class WelcomeScreen {
     this.bind();
 
     Loader.loadData()
-      .then((data) => this.data = data)
-      .then(this.screen.onDataLoad());
+      .then((data) => {
+        if (data) {
+          this.data = data;
+          this.screen.onDataLoad();
+        }
+      });
   }
 
   get element() {

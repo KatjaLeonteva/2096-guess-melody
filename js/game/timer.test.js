@@ -1,5 +1,5 @@
-import {assert} from 'chai';
-import {createTimer} from './timer';
+import {assert} from "chai";
+import {createTimer} from "./timer";
 
 describe(`Check timer creator`, () => {
   it(`should not allow set negative values`, () => {

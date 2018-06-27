@@ -41,6 +41,9 @@ export default class GameScreen {
     this.screen.element.insertBefore(this.logo.element, wrapper);
     this.screen.element.insertBefore(this.timer.element, wrapper);
     this.screen.element.insertBefore(this.mistakes.element, wrapper);
+
+    Object.entries(this.model.currentQuestion.answers).map((el) => console.log(el[1]))
+    console.log(`---`);
   }
 
   bind() {

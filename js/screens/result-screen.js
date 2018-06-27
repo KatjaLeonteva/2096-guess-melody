@@ -14,10 +14,11 @@ export default class ResultScreen {
     this.screen = new ResultView(getResult(this.model.state, this.model.status, this.points));
     this.replay = new ReplayView((this.model.status === GameStatus.WIN ? `Сыграть` : `Попробовать`) + ` ещё раз`);
 
-    // Если выигрыш, загружаем статистику
+    // Если выигрыш, сохраняем результат и загружаем статистику
     // и показываем сравнение с другими игроками
     if (this.model.status === GameStatus.WIN) {
-      Loader.loadStatistics()
+      Loader.saveData({date: Date.now(), points: this.points})
+        .then(Loader.loadStatistics)
         .then((data) => {
           if (data) {
             this.stats = data;

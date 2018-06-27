@@ -1,10 +1,9 @@
 import AbstractView from "./abstract-view";
 
 export default class ResultView extends AbstractView {
-  constructor(result, output) {
+  constructor(result) {
     super();
     this.result = result;
-    this.output = output;
   }
 
   get template() {
@@ -13,8 +12,11 @@ export default class ResultView extends AbstractView {
   
     <h2 class="title">${this.result.title}</h2>
     <div class="main-stat">${this.result.description}</div>
-    ${(this.output === `win`) ? `<span class="main-comparison">${this.result.comparison}</span>` : ``}
   </section>`;
+  }
+
+  onStatsLoad(comparison) {
+    this.element.insertAdjacentHTML(`beforeend`, `<span class="main-comparison">${comparison}</span>`);
   }
 
 }

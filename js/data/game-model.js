@@ -1,4 +1,4 @@
-import {GAME_SETTINGS, INITIAL_STATE} from "./game-data";
+import {GAME_SETTINGS, GameStatus, INITIAL_STATE} from "./game-data";
 import checkAnswers from "../game/check-answers";
 
 class GameModel {
@@ -25,18 +25,18 @@ class GameModel {
 
   get status() {
     if (this.state.timeLeft === 0) {
-      return `timeup`;
+      return GameStatus.TIMEUP;
     }
 
     if (this.state.mistakes > GAME_SETTINGS.maxMistakes) {
-      return `lose`;
+      return GameStatus.LOSE;
     }
 
     if (this.state.answers.length === GAME_SETTINGS.totalQuestions) {
-      return `win`;
+      return GameStatus.WIN;
     }
 
-    return `continue`;
+    return GameStatus.CONTINUE;
   }
 
   restart() {

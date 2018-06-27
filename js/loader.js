@@ -2,10 +2,15 @@ import adaptServerData from "./data/data-adapter";
 import Application from "./app";
 
 const SERVER_URL = `https://es.dump.academy/guess-melody`;
+const APP_ID = 2096;
 
-const checkStatus = (response) => {
+const checkStatus = (response, allowEmptyResponse) => {
   if (response.ok) {
-    return response;
+    return response.json();
+  }
+
+  if (response.status === 404 && allowEmptyResponse) {
+    return [];
   }
 
   throw new Error(`Данные не загрузились. Ошибка: ${response.status} ${response.statusText}`);
@@ -16,7 +21,7 @@ const loadAudio = (url) => {
     const audio = new Audio();
     audio.src = url;
     audio.onloadeddata = () => resolve();
-    audio.onerror = () => reject(`Не удалось загрузить аудиофайл: ${url}`);
+    audio.onerror = () => reject(new Error(`Не удалось загрузить аудиофайл`));
   });
 };
 
@@ -48,9 +53,14 @@ export default class Loader {
   static loadData() {
     return fetch(`${SERVER_URL}/questions`)
       .then(checkStatus)
-      .then((response) => response.json())
       .then((data) => adaptServerData(data))
       .then((questions) => loadAllAudio(questions))
+      .catch(Application.showError);
+  }
+
+  static loadStatistics() {
+    return fetch(`${SERVER_URL}/stats/${APP_ID}`)
+      .then((response) => checkStatus(response, true))
       .catch(Application.showError);
   }
 

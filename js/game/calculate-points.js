@@ -1,7 +1,7 @@
-import {GAME_SETTINGS} from "../data/game-data";
+import {GAME_SETTINGS, GameStatus} from "../data/game-data";
 
 const calculatePoints = (gameState, gameOutput) => {
-  if (gameOutput === `timeup` || gameOutput === `lose`) {
+  if (gameOutput === GameStatus.TIMEUP || gameOutput === GameStatus.LOSE) {
     return GAME_SETTINGS.losePoints;
   }
 

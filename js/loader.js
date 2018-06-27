@@ -6,19 +6,42 @@ const SERVER_URL = `https://es.dump.academy/guess-melody`;
 const checkStatus = (response) => {
   if (response.ok) {
     return response;
-  } else {
-    throw new Error(`Данные не загрузились. Ошибка: ${response.status} ${response.statusText}`);
   }
+
+  throw new Error(`Данные не загрузились. Ошибка: ${response.status} ${response.statusText}`);
 };
 
-// const loadAudio = (url) => {
-//   return new Promise((onLoad, onError) => {
-//     const audio = new Audio();
-//     audio.onload = () => onLoad(audio);
-//     audio.onerror = () => onError(`Не удалось загрузить аудиофайл: ${url}`);
-//     audio.src = url;
-//   });
-// };
+const loadAudio = (url) => {
+  return new Promise((resolve, reject) => {
+    const audio = new Audio();
+    audio.src = url;
+    audio.onloadeddata = () => resolve();
+    audio.onerror = () => reject(`Не удалось загрузить аудиофайл: ${url}`);
+  });
+};
+
+const loadAllAudio = (questions) => {
+  // Создаем список треков. Ссылки не должны повторяться,
+  // чтобы не загружать одну и ту же песню несколько раз
+  let tracks = new Set();
+
+  questions.forEach((question) => {
+    if (question.src) {
+      tracks.add(question.src);
+    } else {
+      const answers = question.answers;
+      for (const i in answers) {
+        if (answers.hasOwnProperty(i)) {
+          tracks.add(answers[i].track.src);
+        }
+      }
+    }
+  });
+
+  // Когда все треки загрузятся, возвращаем первоначальный список вопросов
+  return Promise.all([...tracks].map((url) => loadAudio(url)))
+    .then(() => questions);
+};
 
 export default class Loader {
 
@@ -27,24 +50,8 @@ export default class Loader {
       .then(checkStatus)
       .then((response) => response.json())
       .then((data) => adaptServerData(data))
+      .then((questions) => loadAllAudio(questions))
       .catch(Application.showError);
-    // .then((questions) => questions.map((question) => {
-    //   if (question.src) {
-    //     loadAudio(question.src);
-    //   } else {
-    //     const answers = question.answers;
-    //     for (const i in answers) {
-    //       if (answers.hasOwnProperty(i)) {
-    //         loadAudio(answers[i].track.src);
-    //       }
-    //     }
-    //   }
-    // }))
-    // .then((audioPromises) => {
-    //   Promise.all(audioPromises)
-    //     .then(() => console.log(`все загрузилось`))
-    //     .catch(() => console.log(`не все зашгрузилось`));
-    // });
-
   }
+
 }

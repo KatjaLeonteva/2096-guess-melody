@@ -13,7 +13,8 @@ export default class WelcomeView extends AbstractView {
 
     return `<section class="main main--welcome">
       <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
-      <button class="main-play" style="display: none">Начать игру</button>
+      <p class="text loader">Игра загружается...</p>
+      <button class="main-play main-play--hidden">Начать игру</button>
       <h2 class="title main-title">Правила игры</h2>
       <p class="text main-text">
         Правила просты&nbsp;— за&nbsp;${totalTimeMin} ${pluralize(totalTimeMin, `minutes`)} ответить на все вопросы.<br>
@@ -26,7 +27,8 @@ export default class WelcomeView extends AbstractView {
   onPlayButtonClick() {}
 
   onDataLoad() {
-    this.element.querySelector(`.main-play`).style.display = `block`;
+    this.element.querySelector(`.main-play`).classList.remove(`main-play--hidden`);
+    this.element.querySelector(`.loader`).remove();
   }
 
   bind() {

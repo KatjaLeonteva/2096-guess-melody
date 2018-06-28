@@ -1,9 +1,11 @@
-import Application from '../app';
+import Application from "../app";
+import Loader from "../loader";
+
 import ResultView from "../views/result-view";
 import ReplayView from "../views/replay-view";
+
 import getResult from "../game/get-result";
 import getComparison from "../game/get-comparison";
-import Loader from "../loader";
 import calculatePoints from "../game/calculate-points";
 import {GameStatus} from "../data/game-data";
 

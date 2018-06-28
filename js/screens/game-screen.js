@@ -1,4 +1,4 @@
-import {GAME_SETTINGS} from "../data/game-data";
+import {GAME_SETTINGS, GameStatus} from "../data/game-data";
 import changeScreen from "../game/change-screen";
 
 import Application from "../app";
@@ -54,7 +54,7 @@ export default class GameScreen {
       this.stopTimer();
       this.model.saveAnswer(userAnswers);
 
-      if (this.model.status === `continue`) {
+      if (this.model.status === GameStatus.CONTINUE) {
         this.model.levelUp();
         changeScreen(new GameScreen(this.model).element);
       } else {

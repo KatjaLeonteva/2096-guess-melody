@@ -9,6 +9,13 @@ export const GAME_SETTINGS = {
   wrongPoints: -2
 };
 
+export const GameStatus = {
+  TIMEUP: `timeup`,
+  LOSE: `lose`,
+  WIN: `win`,
+  CONTINUE: `continue`
+};
+
 export const INITIAL_STATE = Object.freeze({
   level: 0,
   timeLeft: GAME_SETTINGS.totalTime,

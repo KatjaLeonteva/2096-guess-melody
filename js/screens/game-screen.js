@@ -1,9 +1,7 @@
-import {GAME_SETTINGS, gameQuestions} from "../data/game-data";
+import {GAME_SETTINGS, GameStatus} from "../data/game-data";
 import changeScreen from "../game/change-screen";
-import checkAnswers from "../game/check-answers";
-import resultScreen from "./result-screen";
-import welcomeScreen from "./welcome-screen";
 
+import Application from "../app";
 import LogoView from "../views/logo-view";
 import TimerView from "../views/timer-view";
 import MistakesView from "../views/mistakes-view";
@@ -16,70 +14,111 @@ const GameView = {
   chooseGenre: GenreView
 };
 
-const gameScreen = (gameState) => {
-  const question = gameQuestions[gameState.level];
+const ONE_SECOND = 1000;
 
-  const screen = new GameView[question.type](question);
-  const wrapper = screen.element.querySelector(`.main-wrap`);
-  const logo = new LogoView();
-  const timer = new TimerView(gameState.timeLeft, GAME_SETTINGS.totalTime);
-  const mistakes = new MistakesView(gameState.mistakes);
+export default class GameScreen {
+  constructor(model) {
+    this.model = model;
+    this.screen = new GameView[this.model.currentQuestion.type](this.model.currentQuestion);
+    this.logo = new LogoView();
+    this.timer = new TimerView(this.model.timeLeft, GAME_SETTINGS.totalTime);
+    this.mistakes = new MistakesView(this.model.mistakes);
+    this.modal = new ConfirmView(`Вы уверены что хотите начать игру заново?`);
 
-  screen.element.insertBefore(logo.element, wrapper);
-  screen.element.insertBefore(timer.element, wrapper);
-  screen.element.insertBefore(mistakes.element, wrapper);
+    this._interval = null;
 
+    this.render();
+    this.bind();
+    this.startTimer();
+  }
 
-  screen.onAnswerSend = (userAnswers) => {
-    event.preventDefault();
+  get element() {
+    return this.screen.element;
+  }
 
-    const isCorrect = checkAnswers(question, userAnswers);
-    if (!isCorrect) {
-      gameState.mistakes++;
-      // TODO re-render mistakes
-    }
+  render() {
+    const wrapper = this.element.querySelector(`.main-wrap`);
+    this.screen.element.insertBefore(this.logo.element, wrapper);
+    this.screen.element.insertBefore(this.timer.element, wrapper);
+    this.screen.element.insertBefore(this.mistakes.element, wrapper);
+  }
 
-    const answerTime = 29000; // test time
+  bind() {
+    this.logo.onLogoClick = () => this.confirmRestart();
 
-    gameState.timeLeft = Math.max((gameState.timeLeft - answerTime), 0);
+    this.screen.onPauseTrack = (player) => this.pauseTrack(player);
+    this.screen.onPlayTrack = (player, otherPlayers) => this.playTrack(player, otherPlayers);
 
-    gameState.answers.push({
-      time: answerTime,
-      correct: isCorrect
-    });
+    this.screen.onAnswerSend = (userAnswers) => {
+      this.stopTracks();
+      this.stopTimer();
+      this.model.saveAnswer(userAnswers);
 
-    if ((gameState.mistakes > GAME_SETTINGS.maxMistakes) || (gameState.timeLeft === 0) || ((gameState.level + 1) === GAME_SETTINGS.totalQuestions)) {
-      changeScreen(resultScreen(gameState));
-    } else {
-      gameState.level++;
-      changeScreen(gameScreen(gameState));
-    }
-  };
+      if (this.model.status === GameStatus.CONTINUE) {
+        this.model.levelUp();
+        changeScreen(new GameScreen(this.model).element);
+      } else {
+        Application.showResult(this.model.state, this.model.status);
+      }
+    };
 
-  const pauseTrack = (player) => {
+    this.modal.onConfirm = () => Application.showWelcome();
+    this.modal.onCancel = () => {
+      this.startTimer();
+      this.screen.element.removeChild(this.modal.element);
+    };
+  }
+
+  stopTimer() {
+    clearInterval(this._interval);
+  }
+
+  startTimer() {
+    this._interval = setInterval(() => {
+      const tick = this.model.tick(ONE_SECOND);
+      if (tick) {
+        this.updateTimer();
+      } else {
+        this.stopTimer();
+        Application.showResult(this.model.state, this.model.status);
+      }
+    }, ONE_SECOND);
+  }
+
+  updateTimer() {
+    const newTimer = new TimerView(this.model.timeLeft, GAME_SETTINGS.totalTime);
+    this.screen.element.replaceChild(newTimer.element, this.timer.element);
+    this.timer = newTimer;
+  }
+
+  pauseTracks(players) {
+    players.forEach((player) => this.pauseTrack(player));
+  }
+
+  pauseTrack(player) {
     player.querySelector(`audio`).pause();
     player.querySelector(`.player-control`).classList.replace(`player-control--pause`, `player-control--play`);
-  };
+  }
 
-  const playTrack = (player, otherPlayers) => {
-    otherPlayers.forEach((plr) => pauseTrack(plr));
+  playTrack(player, otherPlayers) {
+    this.pauseTracks(otherPlayers);
     player.querySelector(`audio`).play();
     player.querySelector(`.player-control`).classList.replace(`player-control--play`, `player-control--pause`);
-  };
+  }
 
-  screen.onPauseTrack = (player) => pauseTrack(player);
+  stopTracks() {
+    const players = Array.from(this.screen.element.querySelectorAll(`.player`));
+    players.forEach((player) => {
+      const audio = player.querySelector(`audio`);
+      audio.pause();
+      audio.currentTime = 0;
+    });
+  }
 
-  screen.onPlayTrack = (player, otherPlayers) => playTrack(player, otherPlayers);
+  confirmRestart() {
+    this.stopTimer();
+    this.pauseTracks(Array.from(this.screen.element.querySelectorAll(`.player`)));
+    this.screen.element.appendChild(this.modal.element);
+  }
 
-  logo.onLogoClick = () => {
-    const modal = new ConfirmView(`Вы уверены что хотите начать игру заново?`);
-    modal.onConfirm = () => changeScreen(welcomeScreen());
-    modal.onCancel = () => screen.element.removeChild(modal.element);
-
-    screen.element.appendChild(modal.element);
-  };
-
-  return screen.element;
-};
-
-export default gameScreen;
+}

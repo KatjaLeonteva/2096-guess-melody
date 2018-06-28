@@ -19,4 +19,5 @@ export default class LogoView extends AbstractView {
       this.onLogoClick();
     });
   }
+
 }

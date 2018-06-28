@@ -15,7 +15,4 @@ export default class TimerView extends AbstractView {
     </div>`;
   }
 
-  bind() {
-
-  }
 }

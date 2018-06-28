@@ -14,7 +14,7 @@ export default class GenreView extends AbstractView {
       <form class="genre">
         ${[...Object.entries(this.question.answers)].map(([answerValue, answerData], index) => `
         <div class="genre-answer">
-          ${new PlayerView(answerData.track.src).template}
+          ${new PlayerView(answerData.track.src, index === 0).template}
           <input type="checkbox" name="answer" value="${answerValue}" id="a-${index + 1}">
           <label class="genre-answer-check" for="a-${index + 1}"></label>
         </div>`).join(``)}
@@ -47,7 +47,8 @@ export default class GenreView extends AbstractView {
       answer.addEventListener(`change`, onAnswerChange);
     });
 
-    sendAnswerButton.addEventListener(`click`, () => {
+    sendAnswerButton.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
       const checkedAnswers = genreAnswers.filter((input) => input.checked).map((input) => input.value);
       this.onAnswerSend(checkedAnswers);
     });

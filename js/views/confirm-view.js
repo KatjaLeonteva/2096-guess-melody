@@ -46,4 +46,5 @@ export default class ConfirmView extends AbstractView {
       this.onConfirm();
     });
   }
+
 }

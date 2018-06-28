@@ -1,8 +1,7 @@
-import {GAME_SETTINGS} from "../data/game-data";
+import {GAME_SETTINGS, GameStatus} from "../data/game-data";
 
-const calculatePoints = (gameState) => {
-  // TODO Здесь можно просто проверять output === `timeup` или `lose`
-  if ((gameState.answers.length < GAME_SETTINGS.totalQuestions) || (gameState.mistakes > GAME_SETTINGS.maxMistakes)) {
+const calculatePoints = (gameState, gameOutput) => {
+  if (gameOutput === GameStatus.TIMEUP || gameOutput === GameStatus.LOSE) {
     return GAME_SETTINGS.losePoints;
   }
 

@@ -15,4 +15,5 @@ export default class ReplayView extends AbstractView {
   bind() {
     this.element.addEventListener(`click`, () => this.onReplayButtonClick());
   }
+
 }

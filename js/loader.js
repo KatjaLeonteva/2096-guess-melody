@@ -2,21 +2,24 @@ import adaptServerData from "./data/data-adapter";
 import Application from "./app";
 
 const SERVER_URL = `https://es.dump.academy/guess-melody`;
+const APP_ID = 2096;
 
-const checkStatus = (response) => {
-  if (response.ok) {
+const checkStatus = (response, errorText) => {
+  if (response.status >= 200 && response.status < 300) {
     return response;
   }
 
-  throw new Error(`Данные не загрузились. Ошибка: ${response.status} ${response.statusText}`);
+  throw new Error(`${errorText} Ошибка: ${response.status} ${response.statusText}`);
 };
+
+const toJSON = (response) => response.json();
 
 const loadAudio = (url) => {
   return new Promise((resolve, reject) => {
     const audio = new Audio();
     audio.src = url;
     audio.onloadeddata = () => resolve();
-    audio.onerror = () => reject(new Error(`Не удалось загрузить аудиофайл`));
+    audio.onerror = () => reject(new Error(`Не удалось загрузить аудиофайл.`));
   });
 };
 
@@ -47,10 +50,34 @@ export default class Loader {
 
   static loadData() {
     return fetch(`${SERVER_URL}/questions`)
-      .then(checkStatus)
-      .then((response) => response.json())
+      .then((response) => checkStatus(response, `Не удалось загрузить вопросы.`))
+      .then(toJSON)
       .then((data) => adaptServerData(data))
       .then((questions) => loadAllAudio(questions))
+      .catch(Application.showError);
+  }
+
+  // Этот метод вызывается после сохранения результата игрока,
+  // поэтому ответ никогда не должен быть пустым и 404 это ошибка
+  static loadStatistics() {
+    return fetch(`${SERVER_URL}/stats/${APP_ID}`)
+      .then((response) => checkStatus(response, `Не удалось загрузить статистику.`))
+      .then(toJSON)
+      .then((statistics) => statistics.map((it) => it.points))
+      .catch(Application.showError);
+  }
+
+  static saveData(data) {
+    data = Object.assign({}, data);
+    const requestSettings = {
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': `application/json`
+      },
+      method: `POST`
+    };
+    return fetch(`${SERVER_URL}/stats/${APP_ID}`, requestSettings)
+      .then((response) => checkStatus(response, `Не удалось сохранить результат.`))
       .catch(Application.showError);
   }
 

@@ -55,7 +55,7 @@ class GameModel {
       this.state.mistakes++;
     }
 
-    const time = GAME_SETTINGS.totalTime - this.timeLeft - this.calculateAnswersTime();
+    const time = GAME_SETTINGS.totalTime - this.timeLeft - this._calculateAnswersTime();
     this.state.answers.push({time, correct});
   }
 
@@ -67,7 +67,7 @@ class GameModel {
     return false;
   }
 
-  calculateAnswersTime() {
+  _calculateAnswersTime() {
     return this.state.answers.reduce((sum, answer) => {
       sum += answer.time;
       return sum;

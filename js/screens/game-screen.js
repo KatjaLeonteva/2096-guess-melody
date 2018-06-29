@@ -27,8 +27,8 @@ export default class GameScreen {
 
     this._interval = null;
 
-    this.render();
     this.bind();
+    this.init();
     this.startTimer();
   }
 
@@ -36,7 +36,7 @@ export default class GameScreen {
     return this.screen.element;
   }
 
-  render() {
+  init() {
     const wrapper = this.element.querySelector(`.main-wrap`);
     this.screen.element.insertBefore(this.logo.element, wrapper);
     this.screen.element.insertBefore(this.timer.element, wrapper);

@@ -9,14 +9,14 @@ export default class WelcomeScreen {
   constructor() {
     this.loadQuestions = () => {
       Loader.loadData()
-        .then((data) => {
-          if (data) {
-            this.data = data;
-            this.screen.onLoadSuccess();
-          } else {
-            this.screen.onLoadFail();
-          }
-        });
+      .then((data) => {
+        if (data) {
+          this.data = data;
+          this.screen.onLoadSuccess();
+        } else {
+          this.screen.onLoadFail();
+        }
+      });
     };
 
     this.screen = new WelcomeView(GAME_SETTINGS, this.loadQuestions);

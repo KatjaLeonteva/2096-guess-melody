@@ -4,12 +4,12 @@ import Application from "./app";
 const SERVER_URL = `https://es.dump.academy/guess-melody`;
 const APP_ID = 2096;
 
-const checkStatus = (response) => {
-  if (response.ok) {
+const checkStatus = (response, errorText) => {
+  if (response.status >= 200 && response.status < 300) {
     return response;
   }
 
-  throw new Error(`Данные не загрузились. Ошибка: ${response.status} ${response.statusText}`);
+  throw new Error(`${errorText} Ошибка: ${response.status} ${response.statusText}`);
 };
 
 const toJSON = (response) => response.json();
@@ -19,7 +19,7 @@ const loadAudio = (url) => {
     const audio = new Audio();
     audio.src = url;
     audio.onloadeddata = () => resolve();
-    audio.onerror = () => reject(new Error(`Не удалось загрузить аудиофайл`));
+    audio.onerror = () => reject(new Error(`Не удалось загрузить аудиофайл.`));
   });
 };
 
@@ -50,7 +50,7 @@ export default class Loader {
 
   static loadData() {
     return fetch(`${SERVER_URL}/questions`)
-      .then(checkStatus)
+      .then((response) => checkStatus(response, `Не удалось загрузить вопросы.`))
       .then(toJSON)
       .then((data) => adaptServerData(data))
       .then((questions) => loadAllAudio(questions))
@@ -61,7 +61,7 @@ export default class Loader {
   // поэтому ответ никогда не должен быть пустым и 404 это ошибка
   static loadStatistics() {
     return fetch(`${SERVER_URL}/stats/${APP_ID}`)
-      .then(checkStatus)
+      .then((response) => checkStatus(response, `Не удалось загрузить статистику.`))
       .then(toJSON)
       .then((statistics) => statistics.map((it) => it.points))
       .catch(Application.showError);
@@ -77,7 +77,7 @@ export default class Loader {
       method: `POST`
     };
     return fetch(`${SERVER_URL}/stats/${APP_ID}`, requestSettings)
-      .then(checkStatus)
+      .then((response) => checkStatus(response, `Не удалось сохранить результат.`))
       .catch(Application.showError);
   }
 

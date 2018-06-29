@@ -16,6 +16,24 @@ export default class ResultScreen {
     this.screen = new ResultView(getResult(this.model.state, this.model.status, this.points));
     this.replay = new ReplayView((this.model.status === GameStatus.WIN ? `Сыграть` : `Попробовать`) + ` ещё раз`);
 
+    this._saveAndCompare();
+    this.bind();
+    this.init();
+  }
+
+  get element() {
+    return this.screen.element;
+  }
+
+  init() {
+    this.screen.element.appendChild(this.replay.element);
+  }
+
+  bind() {
+    this.replay.onReplayButtonClick = () => Application.showGame(this.model.data);
+  }
+
+  _saveAndCompare() {
     // Если выигрыш, сохраняем результат и загружаем статистику
     // и показываем сравнение с другими игроками
     if (this.model.status === GameStatus.WIN) {
@@ -28,21 +46,6 @@ export default class ResultScreen {
           }
         });
     }
-
-    this.render();
-    this.bind();
-  }
-
-  get element() {
-    return this.screen.element;
-  }
-
-  render() {
-    this.screen.element.appendChild(this.replay.element);
-  }
-
-  bind() {
-    this.replay.onReplayButtonClick = () => Application.showGame(this.model.data);
   }
 
 }

@@ -1,14 +1,14 @@
 const getComparison = (points, statistics) => {
-  statistics.sort((a, b) => b - a);
-  const players = statistics.length;
+  statistics.sort().reverse();
+  const playersCount = statistics.length;
 
-  if (players === 1) {
+  if (playersCount === 1) {
     return `Вы первый, кто сыграл в эту игру!`;
   }
 
   const place = statistics.indexOf(points) + 1;
-  const rate = Math.round(((players - place) / players) * 100);
-  return `Вы заняли ${place} место из ${players}. Это лучше, чем у ${rate}% игроков`;
+  const rate = Math.round(((playersCount - place) / playersCount) * 100);
+  return `Вы заняли ${place} место из ${playersCount}. Это лучше, чем у ${rate}% игроков`;
 };
 
 export default getComparison;

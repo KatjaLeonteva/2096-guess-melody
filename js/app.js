@@ -26,15 +26,16 @@ export default class Application {
   static showError(error) {
     const modal = new ErrorView(error.message);
 
+    const onModalClick = () => {
+      modal.element.removeEventListener(`click`, onModalClick);
+      modal.element.remove();
+    };
+
     // Сообщение удаляется по клику
-    modal.element.addEventListener(`click`, function (evt) {
-      evt.currentTarget.remove();
-    });
+    modal.element.addEventListener(`click`, onModalClick);
 
     // Сообщение удаляется через 5 секунд
-    setTimeout(function () {
-      modal.element.remove();
-    }, 5000);
+    setTimeout(onModalClick, 5000);
 
     document.querySelector(`div.app`).appendChild(modal.element);
   }

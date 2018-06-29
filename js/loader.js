@@ -16,7 +16,7 @@ const loadAudio = (url) => {
     const audio = new Audio();
     audio.src = url;
     audio.onloadeddata = () => resolve();
-    audio.onerror = () => reject(`Не удалось загрузить аудиофайл: ${url}`);
+    audio.onerror = () => reject(new Error(`Не удалось загрузить аудиофайл`));
   });
 };
 

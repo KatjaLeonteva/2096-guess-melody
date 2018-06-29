@@ -18,6 +18,7 @@ export default class WelcomeScreen {
         }
       });
     };
+
     this.screen = new WelcomeView(GAME_SETTINGS, this.loadQuestions);
 
     this.bind();

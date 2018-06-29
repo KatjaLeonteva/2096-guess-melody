@@ -7,20 +7,29 @@ import {GAME_SETTINGS} from "../data/game-data";
 
 export default class WelcomeScreen {
   constructor() {
-    this.screen = new WelcomeView(GAME_SETTINGS);
-    this.bind();
-
-    Loader.loadData()
+    this.loadQuestions = () => {
+      Loader.loadData()
       .then((data) => {
         if (data) {
           this.data = data;
-          this.screen.onDataLoad();
+          this.screen.onLoadSuccess();
+        } else {
+          this.screen.onLoadFail();
         }
       });
+    };
+    this.screen = new WelcomeView(GAME_SETTINGS, this.loadQuestions);
+
+    this.bind();
+    this.init();
   }
 
   get element() {
     return this.screen.element;
+  }
+
+  init() {
+    this.loadQuestions();
   }
 
   bind() {

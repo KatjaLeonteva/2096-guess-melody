@@ -45,4 +45,8 @@
   position: absolute;
   top: 500px;
   color: #ff9749;
+
+  &--failed {
+    cursor: pointer;
+  }
 }

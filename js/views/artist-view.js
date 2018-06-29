@@ -11,15 +11,15 @@ export default class ArtistView extends AbstractView {
     return `<section class="main main--level main--level-artist">
     <div class="main-wrap">
       <h2 class="title main-title">${this.question.title}</h2>
-      ${new PlayerView(this.question.trackSrc, true).template}
+      ${new PlayerView(this.question.src, true).template}
       <form class="main-list">
         ${[...Object.entries(this.question.answers)].map(([answerValue, answerData], index) => `
         <div class="main-answer-wrapper">
           <input class="main-answer-r" type="radio" id="answer-${index + 1}" name="answer" value="${answerValue}"/>
           <label class="main-answer" for="answer-${index + 1}">
             <img class="main-answer-preview" src="${answerData.track.image}"
-                 alt="${answerData.track.name}" width="134" height="134">
-            ${answerData.track.name}
+                 alt="${answerData.track.artist}" width="134" height="134">
+            ${answerData.track.artist}
           </label>
         </div>`).join(``)}
       </form>

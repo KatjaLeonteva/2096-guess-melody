@@ -1,9 +1,9 @@
-import {GAME_SETTINGS, INITIAL_STATE, gameQuestions, GameStatus} from "./game-data";
+import {GAME_SETTINGS, INITIAL_STATE, GameStatus} from "./game-data";
 import checkAnswers from "../game/check-answers";
 
 class GameModel {
-  constructor() {
-    this._questions = gameQuestions;
+  constructor(data) {
+    this.data = data;
     this.restart();
   }
 
@@ -20,7 +20,7 @@ class GameModel {
   }
 
   get currentQuestion() {
-    return this._questions[this.level];
+    return this.data[this.level];
   }
 
   get status() {

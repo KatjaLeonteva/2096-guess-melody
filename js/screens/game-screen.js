@@ -58,7 +58,7 @@ export default class GameScreen {
         this.model.levelUp();
         changeScreen(new GameScreen(this.model).element);
       } else {
-        Application.showResult(this.model.state, this.model.status);
+        Application.showResult(this.model);
       }
     };
 
@@ -80,7 +80,7 @@ export default class GameScreen {
         this.updateTimer();
       } else {
         this.stopTimer();
-        Application.showResult(this.model.state, this.model.status);
+        Application.showResult(this.model);
       }
     }, ONE_SECOND);
   }

@@ -5,7 +5,7 @@ import ResultScreen from "./screens/result-screen";
 import changeScreen from "./game/change-screen";
 import ErrorView from "./views/error-view";
 
-const MODAL_TIMEOUT = 5000; // 5 sec
+const app = document.querySelector(`div.app`);
 
 export default class Application {
 
@@ -27,19 +27,7 @@ export default class Application {
 
   static showError(error) {
     const modal = new ErrorView(error.message);
-
-    const onModalClick = () => {
-      modal.element.removeEventListener(`click`, onModalClick);
-      modal.element.remove();
-    };
-
-    // Сообщение удаляется по клику
-    modal.element.addEventListener(`click`, onModalClick);
-
-    // Сообщение удаляется через 5 секунд
-    setTimeout(onModalClick, MODAL_TIMEOUT);
-
-    document.querySelector(`div.app`).appendChild(modal.element);
+    app.appendChild(modal.element);
   }
 
 }

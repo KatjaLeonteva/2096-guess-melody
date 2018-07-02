@@ -1,5 +1,5 @@
 const getComparison = (points, statistics) => {
-  statistics.sort().reverse();
+  statistics.sort((a, b) => b - a);
   const playersCount = statistics.length;
 
   if (playersCount === 1) {

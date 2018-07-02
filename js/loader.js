@@ -22,7 +22,7 @@ const loadAudio = (url) => {
   return new Promise((resolve, reject) => {
     const audio = new Audio();
     audio.src = url;
-    audio.onloadeddata = () => resolve(audio); // Если использовать элемент audio отсюда, то все равно при нажатии на play загружаются снова
+    audio.onloadeddata = () => resolve(audio); // Если использовать элемент audio отсюда, то все равно при нажатии на play загружаются снова даже при preload=none
     audio.onerror = () => reject(new Error(`Не удалось загрузить аудиофайл.`));
   });
 };

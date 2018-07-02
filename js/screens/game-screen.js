@@ -1,5 +1,6 @@
 import {GAME_SETTINGS, GameStatus} from "../data/game-data";
 import changeScreen from "../game/change-screen";
+import {TimeInMs} from "../util";
 
 import Application from "../app";
 import LogoView from "../views/logo-view";
@@ -13,8 +14,6 @@ const GameView = {
   guessArtist: ArtistView,
   chooseGenre: GenreView
 };
-
-const ONE_SECOND = 1000;
 
 export default class GameScreen {
   constructor(model) {
@@ -75,14 +74,14 @@ export default class GameScreen {
 
   startTimer() {
     this._interval = setInterval(() => {
-      const tick = this.model.tick(ONE_SECOND);
+      const tick = this.model.tick(TimeInMs.ONE_SECOND);
       if (tick) {
         this.updateTimer();
       } else {
         this.stopTimer();
         Application.showResult(this.model);
       }
-    }, ONE_SECOND);
+    }, TimeInMs.ONE_SECOND);
   }
 
   updateTimer() {

@@ -22,5 +22,3 @@ export const INITIAL_STATE = Object.freeze({
   mistakes: 0,
   answers: []
 });
-
-export const statistics = [6, 4, 12, 8];

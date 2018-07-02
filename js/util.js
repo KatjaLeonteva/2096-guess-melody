@@ -1,4 +1,4 @@
-// Варианты склонения для 1, 2-4, 0,5+
+// Варианты склонения для 1 шт, 2-4 шт, 0 и 5-20 шт
 const cases = {
   minutes: [`минуту`, `минуты`, `минут`],
   seconds: [`секунду`, `секунды`, `секунд`],
@@ -8,14 +8,19 @@ const cases = {
   fast: [`быстрый`, `быстрых`, `быстрых`]
 };
 
+export const TimeInMs = {
+  ONE_MINUTE: 60000,
+  ONE_SECOND: 1000
+};
+
 /**
  * Переводит миллисекунды в минуты и секунды
  * @param {number} ms Миллисекунды.
  * @return {object} Время в минутах и секундах
  */
 export const msToMinutesAndSeconds = (ms) => {
-  const minutes = Math.floor(ms / 60000);
-  const seconds = ((ms % 60000) / 1000).toFixed(0);
+  const minutes = Math.floor(ms / TimeInMs.ONE_MINUTE);
+  const seconds = ((ms % TimeInMs.ONE_MINUTE) / TimeInMs.ONE_SECOND).toFixed(0);
   return {minutes, seconds};
 };
 
@@ -30,16 +35,16 @@ export const pluralize = (number, noun) => {
   const nouns = cases[noun];
 
   let n = Math.abs(number);
-  n %= 100;
-  if (n >= 5 && n <= 20) {
-    return nouns[2];
-  }
-  n %= 10;
-  if (n === 1) {
+
+  // Ends in 1, excluding 11
+  if (n % 10 === 1 && n % 100 !== 11) {
     return nouns[0];
   }
-  if (n >= 2 && n <= 4) {
+  // Ends in 2-4, excluding 12-14
+  if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) {
     return nouns[1];
   }
+
+  // Everything else
   return nouns[2];
 };

@@ -45,9 +45,9 @@ const adaptServerData = (data) => {
 
     question.title = question.question;
 
-    if (question.type === `guessArtist`) {
+    if (question.type === QuestionType.artist) {
       question.answers = preProcessArtistAnswers(question.answers);
-    } else if (question.type === `chooseGenre`) {
+    } else if (question.type === QuestionType.genre) {
       question.answers = preProcessGenreAnswers(question.answers, question.genre);
     }
   }

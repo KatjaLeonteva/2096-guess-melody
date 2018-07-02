@@ -3,9 +3,13 @@ import Application from "./app";
 
 const SERVER_URL = `https://es.dump.academy/guess-melody`;
 const APP_ID = 2096;
+const StatusCodes = {
+  OK_MIN: 200,
+  OK_MAX: 300
+};
 
 const checkStatus = (response, errorText) => {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.status >= StatusCodes.OK_MIN && response.status < StatusCodes.OK_MAX) {
     return response;
   }
 

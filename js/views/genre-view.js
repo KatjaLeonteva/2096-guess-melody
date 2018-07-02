@@ -13,7 +13,7 @@ export default class GenreView extends AbstractView {
       <h2 class="title">${this.question.title}</h2>
       <form class="genre">
         ${[...Object.entries(this.question.answers)].map(([answerValue, answerData], index) => `
-        <div class="genre-answer">
+        <div class="genre-answer" data-correct="${answerData.correct}">
           ${new PlayerView(answerData.track.src, index === 0).template}
           <input type="checkbox" name="answer" value="${answerValue}" id="a-${index + 1}">
           <label class="genre-answer-check" for="a-${index + 1}"></label>

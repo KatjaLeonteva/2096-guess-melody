@@ -61,11 +61,7 @@ export default class GenreView extends AbstractView {
   }
 
   pauseAllTracks() {
-    this.players.map((it) =>{
-      if (it.isPlaying()) {
-        it.pauseTrack();
-      }
-    });
+    this.players.map((it) => it.pauseTrack());
   }
 
   stopAllTracks() {

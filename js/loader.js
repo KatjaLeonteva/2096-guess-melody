@@ -22,7 +22,9 @@ const loadAudio = (url) => {
   return new Promise((resolve, reject) => {
     const audio = new Audio();
     audio.src = url;
-    audio.onloadeddata = () => resolve(audio); // Если использовать элемент audio отсюда, то все равно при нажатии на play загружаются снова даже при preload=none
+    audio.preload = `none`;
+    audio.load();
+    audio.oncanplaythrough = () => resolve(audio);
     audio.onerror = () => reject(new Error(`Не удалось загрузить аудиофайл.`));
   });
 };
@@ -47,7 +49,26 @@ const loadAllAudio = (questions) => {
 
   // Когда все треки загрузятся, возвращаем первоначальный список вопросов
   return Promise.all([...tracks].map((url) => loadAudio(url)))
-    .then(() => questions);
+    .then((audios) => {
+      return replaceSrcWithElement(questions, audios);
+    });
+};
+
+const replaceSrcWithElement = (questions, audios) => {
+  questions.forEach((question) => {
+    if (question.src) {
+      question.src = audios.find((audio) => audio.src === question.src);
+    } else {
+      const answers = question.answers;
+      for (const i in answers) {
+        if (answers.hasOwnProperty(i)) {
+          answers[i].track.src = audios.find((audio) => audio.src === answers[i].track.src);
+        }
+      }
+    }
+  });
+
+  return questions;
 };
 
 export default class Loader {

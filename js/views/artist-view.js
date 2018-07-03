@@ -5,6 +5,17 @@ export default class ArtistView extends AbstractView {
   constructor(question) {
     super();
     this.question = question;
+
+    // Трюк с _теми_самыми_ элементами audio не работает.
+    // Для примера в вопросах "Кто исполняет эта песню"
+    // меняю элемент audio из PlayerView
+    // на созданный во время загрузки элемент audio,
+    // но во время play() он все равно загружается опять
+    // (сделала здесь, чтобы не переписывать весь биндинг)
+    const player = this.question.src;
+    const placeholder = this.element.querySelector(`audio`);
+    player.autoplay = placeholder.autoplay;
+    placeholder.parentElement.replaceChild(player, placeholder);
   }
 
   get template() {

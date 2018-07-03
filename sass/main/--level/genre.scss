@@ -17,6 +17,10 @@
   background: url("../img/icon-note-inactive.png") no-repeat;
   height: 49px;
   width: 35px;
+
+  &--correct {
+    background: url("../img/wrong-answer.png") no-repeat;
+  }
 }
 
 input[type=checkbox]:checked + .genre-answer-check {

@@ -19,10 +19,10 @@ export default class ArtistView extends AbstractView {
       <div class="player"></div>
       <form class="main-list">
         ${[...Object.entries(this.question.answers)].map(([answerValue, answerData], index) => `
-        <div class="main-answer-wrapper" data-correct="${answerData.correct}">
+        <div class="main-answer-wrapper">
           <input class="main-answer-r" type="radio" id="answer-${index + 1}" name="answer" value="${answerValue}"/>
           <label class="main-answer" for="answer-${index + 1}">
-            <img class="main-answer-preview" src="${answerData.track.image}"
+            <img class="main-answer-preview ${this.model.debug && answerData.correct ? `main-answer-preview--correct` : ``}" src="${answerData.track.image}"
                  alt="${answerData.track.artist}" width="134" height="134">
             ${answerData.track.artist}
           </label>

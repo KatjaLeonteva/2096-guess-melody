@@ -6,6 +6,7 @@ class GameModel {
     this.data = data;
     this.questions = this.data.questions;
     this.audiosMap = this.data.audiosMap;
+    this.debug = new URLSearchParams(location.search).get(`debug`) || false; // Чтобы вкллючить режим отладки, добавить параметр ?debug=true
     this.restart();
   }
 

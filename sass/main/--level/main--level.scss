@@ -63,6 +63,10 @@ $preview-spacing: 11px;
   margin-bottom: $preview-spacing;
   overflow: hidden;
   width: $preview-size;
+
+  &--correct {
+    border-color: red;
+  }
 }
 
 @import "genre";

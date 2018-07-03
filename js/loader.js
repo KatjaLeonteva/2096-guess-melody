@@ -18,13 +18,13 @@ const checkStatus = (response, errorText) => {
 
 const toJSON = (response) => response.json();
 
-const loadAudio = (url) => {
+const loadAudio = (src) => {
   return new Promise((resolve, reject) => {
     const audio = new Audio();
-    audio.src = url;
+    audio.src = src;
     audio.preload = `none`;
     audio.load();
-    audio.oncanplaythrough = () => resolve(audio);
+    audio.oncanplaythrough = () => resolve([audio.src, audio]);
     audio.onerror = () => reject(new Error(`Не удалось загрузить аудиофайл.`));
   });
 };
@@ -32,34 +32,27 @@ const loadAudio = (url) => {
 const loadAllAudio = (questions) => {
   // Создаем список треков. Ссылки не должны повторяться,
   // чтобы не загружать одну и ту же песню несколько раз
-  let tracks = new Set();
 
-  questions.forEach((question) => {
+  const audiosSrc = questions.reduce((set, question) => {
     if (question.src) {
-      tracks.add(question.src);
+      set.add(question.src);
     } else {
       const answers = question.answers;
       for (const i in answers) {
         if (answers.hasOwnProperty(i)) {
-          tracks.add(answers[i].track.src);
+          set.add(answers[i].track.src);
         }
       }
     }
-  });
+    return set;
+  }, new Set());
 
   // Когда все треки загрузятся, возвращаем первоначальный список вопросов
   // и мапку, из которой будем брать элементы аудио по src
-  return Promise.all([...tracks].map((url) => loadAudio(url)))
+  return Promise.all([...audiosSrc].map((src) => loadAudio(src)))
     .then((audios) => {
-      return {questions, audiosMap: createAudiosMap(audios)};
+      return {questions, audiosMap: new Map(audios)};
     });
-};
-
-const createAudiosMap = (audios) => {
-  return audios.reduce((map, elem) => {
-    map.set(elem.src, elem);
-    return map;
-  }, new Map());
 };
 
 export default class Loader {

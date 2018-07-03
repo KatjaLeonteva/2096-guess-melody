@@ -45,7 +45,9 @@ export default class PlayerView extends AbstractView {
 
   playTrack() {
     this.onPlayClicked();
-    this.element.querySelector(`audio`).play();
+    this.element.querySelector(`audio`).play().catch((error) => {
+      throw new Error(error); // An error ocurred or the user agent prevented playback.
+    });
     this.element.querySelector(`.player-control`).classList.replace(`player-control--play`, `player-control--pause`);
   }
 

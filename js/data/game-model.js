@@ -4,10 +4,18 @@ import checkAnswers from "../game/check-answers";
 class GameModel {
   constructor(data) {
     this.data = data;
-    this.questions = this.data.questions;
-    this.audiosMap = this.data.audiosMap;
-    this.debug = new URLSearchParams(location.search).get(`debug`) || false; // Чтобы вкллючить режим отладки, добавить параметр ?debug=true
+    // Чтобы включить режим отладки, нужно добавить в url параметр ?debug=true
+    // Правильные ответы будут обозначены красным.
+    this.debug = new URLSearchParams(location.search).get(`debug`) || false;
     this.restart();
+  }
+
+  get questions() {
+    return this.data.questions;
+  }
+
+  get audiosMap() {
+    return this.data.audiosMap;
   }
 
   get level() {

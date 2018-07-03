@@ -18,7 +18,7 @@ const GameView = {
 export default class GameScreen {
   constructor(model) {
     this.model = model;
-    this.screen = new GameView[this.model.currentQuestion.type](this.model.currentQuestion);
+    this.screen = new GameView[this.model.currentQuestion.type](this.model);
     this.logo = new LogoView();
     this.timer = new TimerView(this.model.timeLeft, GAME_SETTINGS.totalTime);
     this.mistakes = new MistakesView(this.model.mistakes);
@@ -45,12 +45,9 @@ export default class GameScreen {
   bind() {
     this.logo.onLogoClick = () => this.confirmRestart();
 
-    this.screen.onPauseTrack = (player) => this.pauseTrack(player);
-    this.screen.onPlayTrack = (player, otherPlayers) => this.playTrack(player, otherPlayers);
-
     this.screen.onAnswerSend = (userAnswers) => {
-      this.stopTracks();
       this.stopTimer();
+      this.screen.stopAllTracks(); // Баг в Safari: песни продолжают проигрываться при переходе на новый экран
       this.model.saveAnswer(userAnswers);
 
       if (this.model.status === GameStatus.CONTINUE) {
@@ -90,33 +87,9 @@ export default class GameScreen {
     this.timer = newTimer;
   }
 
-  pauseTracks(players) {
-    players.forEach((player) => this.pauseTrack(player));
-  }
-
-  pauseTrack(player) {
-    player.querySelector(`audio`).pause();
-    player.querySelector(`.player-control`).classList.replace(`player-control--pause`, `player-control--play`);
-  }
-
-  playTrack(player, otherPlayers) {
-    this.pauseTracks(otherPlayers);
-    player.querySelector(`audio`).play();
-    player.querySelector(`.player-control`).classList.replace(`player-control--play`, `player-control--pause`);
-  }
-
-  stopTracks() {
-    const players = Array.from(this.screen.element.querySelectorAll(`.player`));
-    players.forEach((player) => {
-      const audio = player.querySelector(`audio`);
-      audio.pause();
-      audio.currentTime = 0;
-    });
-  }
-
   confirmRestart() {
     this.stopTimer();
-    this.pauseTracks(Array.from(this.screen.element.querySelectorAll(`.player`)));
+    this.screen.pauseAllTracks();
     this.screen.element.appendChild(this.modal.element);
   }
 

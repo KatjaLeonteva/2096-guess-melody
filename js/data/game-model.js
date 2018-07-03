@@ -4,6 +4,8 @@ import checkAnswers from "../game/check-answers";
 class GameModel {
   constructor(data) {
     this.data = data;
+    this.questions = this.data.questions;
+    this.audiosMap = this.data.audiosMap;
     this.restart();
   }
 
@@ -20,7 +22,7 @@ class GameModel {
   }
 
   get currentQuestion() {
-    return this.data[this.level];
+    return this.questions[this.level];
   }
 
   get status() {

@@ -2,9 +2,19 @@ import AbstractView from "./abstract-view";
 import PlayerView from "./player-view";
 
 export default class GenreView extends AbstractView {
-  constructor(question) {
+  constructor(model) {
     super();
-    this.question = question;
+    this.model = model;
+    this.question = this.model.currentQuestion;
+    this.players = [];
+
+    const placeholders = this.element.querySelectorAll(`.player`);
+    placeholders.forEach((placeholder, index) => {
+      const player = new PlayerView(this.model.audiosMap.get(this.question.answers[placeholder.id].track.src), index === 0);
+      player.onPlayClicked = () => this.pauseAllTracks();
+      this.players.push(player);
+      placeholder.parentElement.replaceChild(player.element, placeholder);
+    });
   }
 
   get template() {
@@ -14,7 +24,7 @@ export default class GenreView extends AbstractView {
       <form class="genre">
         ${[...Object.entries(this.question.answers)].map(([answerValue, answerData], index) => `
         <div class="genre-answer" data-correct="${answerData.correct}">
-          ${new PlayerView(answerData.track.src.src, index === 0).template}
+          <div class="player" id="${answerValue}"></div>
           <input type="checkbox" name="answer" value="${answerValue}" id="a-${index + 1}">
           <label class="genre-answer-check" for="a-${index + 1}"></label>
         </div>`).join(``)}
@@ -25,10 +35,6 @@ export default class GenreView extends AbstractView {
   }
 
   onAnswerSend() {}
-
-  onPauseTrack() {}
-
-  onPlayTrack() {}
 
   bind() {
     // Обработчик для формы
@@ -52,21 +58,18 @@ export default class GenreView extends AbstractView {
       const checkedAnswers = genreAnswers.filter((input) => input.checked).map((input) => input.value);
       this.onAnswerSend(checkedAnswers);
     });
+  }
 
-    // Обработчик для плеера
-    const allPlayers = Array.from(this.element.querySelectorAll(`.player`));
-
-    allPlayers.forEach((player) => {
-      player.addEventListener(`click`, (evt) => {
-        evt.preventDefault();
-        evt.stopPropagation();
-        const audio = player.querySelector(`audio`);
-        if (audio.duration > 0 && !audio.paused) {
-          this.onPauseTrack(player);
-        } else {
-          this.onPlayTrack(player, allPlayers);
-        }
-      });
+  pauseAllTracks() {
+    this.players.map((it) =>{
+      if (it.isPlaying()) {
+        it.pauseTrack();
+      }
     });
   }
+
+  stopAllTracks() {
+    this.players.map((it) => it.stopTrack());
+  }
+
 }

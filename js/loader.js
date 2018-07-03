@@ -48,27 +48,18 @@ const loadAllAudio = (questions) => {
   });
 
   // Когда все треки загрузятся, возвращаем первоначальный список вопросов
+  // и мапку, из которой будем брать элементы аудио по src
   return Promise.all([...tracks].map((url) => loadAudio(url)))
     .then((audios) => {
-      return replaceSrcWithElement(questions, audios);
+      return {questions, audiosMap: createAudiosMap(audios)};
     });
 };
 
-const replaceSrcWithElement = (questions, audios) => {
-  questions.forEach((question) => {
-    if (question.src) {
-      question.src = audios.find((audio) => audio.src === question.src);
-    } else {
-      const answers = question.answers;
-      for (const i in answers) {
-        if (answers.hasOwnProperty(i)) {
-          answers[i].track.src = audios.find((audio) => audio.src === answers[i].track.src);
-        }
-      }
-    }
-  });
-
-  return questions;
+const createAudiosMap = (audios) => {
+  return audios.reduce((map, elem) => {
+    map.set(elem.src, elem);
+    return map;
+  }, new Map());
 };
 
 export default class Loader {

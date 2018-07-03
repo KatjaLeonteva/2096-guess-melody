@@ -2,27 +2,21 @@ import AbstractView from "./abstract-view";
 import PlayerView from "./player-view";
 
 export default class ArtistView extends AbstractView {
-  constructor(question) {
+  constructor(model) {
     super();
-    this.question = question;
+    this.model = model;
+    this.question = this.model.currentQuestion;
+    this.player = new PlayerView(this.model.audiosMap.get(this.question.src), true);
 
-    // Трюк с _теми_самыми_ элементами audio не работает.
-    // Для примера в вопросах "Кто исполняет эта песню"
-    // меняю элемент audio из PlayerView
-    // на созданный во время загрузки элемент audio,
-    // но во время play() он все равно загружается опять
-    // (сделала здесь, чтобы не переписывать весь биндинг)
-    const player = this.question.src;
-    const placeholder = this.element.querySelector(`audio`);
-    player.autoplay = placeholder.autoplay;
-    placeholder.parentElement.replaceChild(player, placeholder);
+    const placeholder = this.element.querySelector(`.player`);
+    placeholder.parentElement.replaceChild(this.player.element, placeholder);
   }
 
   get template() {
     return `<section class="main main--level main--level-artist">
     <div class="main-wrap">
       <h2 class="title main-title">${this.question.title}</h2>
-      ${new PlayerView(this.question.src, true).template}
+      <div class="player"></div>
       <form class="main-list">
         ${[...Object.entries(this.question.answers)].map(([answerValue, answerData], index) => `
         <div class="main-answer-wrapper" data-correct="${answerData.correct}">
@@ -40,10 +34,6 @@ export default class ArtistView extends AbstractView {
 
   onAnswerSend() {}
 
-  onPauseTrack() {}
-
-  onPlayTrack() {}
-
   bind() {
     // Обработчик для формы
     const artistForm = this.element.querySelector(`form.main-list`);
@@ -56,21 +46,16 @@ export default class ArtistView extends AbstractView {
         this.onAnswerSend(checkedAnswers);
       });
     });
+  }
 
-    // Обработчик для плеера
-    const allPlayers = Array.from(this.element.querySelectorAll(`.player`));
+  pauseAllTracks() {
+    if (this.player.isPlaying()) {
+      this.player.pauseTrack();
+    }
+  }
 
-    allPlayers.forEach((player) => {
-      player.addEventListener(`click`, (evt) => {
-        evt.preventDefault();
-        const audio = player.querySelector(`audio`);
-        if (audio.duration > 0 && !audio.paused) {
-          this.onPauseTrack(player);
-        } else {
-          this.onPlayTrack(player, allPlayers);
-        }
-      });
-    });
+  stopAllTracks() {
+    this.player.stopTrack();
   }
 
 }
